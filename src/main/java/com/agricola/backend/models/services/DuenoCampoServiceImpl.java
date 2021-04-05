@@ -5,40 +5,41 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.agricola.backend.models.dao.IAdministradorDao;
-import com.agricola.backend.models.entity.Administrador;
+import com.agricola.backend.models.dao.IDuenoCampoDao;
+import com.agricola.backend.models.entity.DuenoCampo;
 
 @Service
-public class AdministradorServiceImpl implements IAdministradorService{
+public class DuenoCampoServiceImpl implements IDuenoCampoService{
 
+	
 	@Autowired
-	private IAdministradorDao administradorDao;
+	private IDuenoCampoDao duenoCampoDao;
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<Administrador> findAll() {
+	public List<DuenoCampo> findAll() {
 		// TODO Auto-generated method stub
-		return (List<Administrador>) administradorDao.findAll();
+		return (List<DuenoCampo>) duenoCampoDao.findAll();
 	}
 
 	@Override
 	@Transactional
-	public Administrador save(Administrador administrador) {
-		return administradorDao.save(administrador);
+	public DuenoCampo save(DuenoCampo duenoCampo) {
+		// TODO Auto-generated method stub
+		return duenoCampoDao.save(duenoCampo);
 	}
 
 	@Override
 	@Transactional
 	public void delete(Long id) {
 		// TODO Auto-generated method stub
-		 administradorDao.deleteById(id);
+		duenoCampoDao.deleteById(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Administrador findById(Long id) {
+	public DuenoCampo findById(Long id) {
 		// TODO Auto-generated method stub
-		return administradorDao.findById(id).orElse(null);
+		return duenoCampoDao.findById(id).orElse(null);
 	}
-
 }

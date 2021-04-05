@@ -9,25 +9,30 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
-
 @Entity
-@Table(name="administradores_campo")
-public class Administrador  implements Serializable{
-	
+@Table(name="duenos_campo")
+public class DuenoCampo implements Serializable{
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_administrador_campo")
-	private Long idAdministrador;
- 
+	@Column(name="id_dueno_campo")
+	private Long idDuenoCampo;
+	
 	@Column(length = 50, nullable = false, updatable = true) 
 	private String nombre;
 
 	@Column(length = 12, nullable = false, updatable = false)
 	private String rut;
 
-	@Column(length = 12, nullable = false, updatable = false)
-	private String telefono;
+
+	public Long getIdDuenoCampo() {
+		return idDuenoCampo;
+	}
+
+	public void setIdDuenoCampo(Long idDuenoCampo) {
+		this.idDuenoCampo = idDuenoCampo;
+	}
+
 
 	@Column(length = 50, nullable = false, updatable = true)
 	private String email;
@@ -35,35 +40,23 @@ public class Administrador  implements Serializable{
 	@Column(length = 15, nullable = false, updatable = true) 
 	private String pass;
 	
-	
-	
-	public Long getId() {
-		return idAdministrador;
-	}
-
-
-
-	public void setId(Long id) {
-		this.idAdministrador = id;
-	}
-
-
 
 	public String getNombre() {
 		return nombre;
 	}
-
-
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
 
-
 	public String getRut() {
 		return rut;
 	}
+
+
+
+
 
 
 
@@ -73,15 +66,12 @@ public class Administrador  implements Serializable{
 
 
 
-	public String getTelefono() {
-		return telefono;
-	}
 
 
 
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
-	}
+
+
+
 
 
 
@@ -91,9 +81,17 @@ public class Administrador  implements Serializable{
 
 
 
+
+
+
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+
+
+
 
 
 
@@ -103,9 +101,21 @@ public class Administrador  implements Serializable{
 
 
 
-	public void setPassword(String password) {
-		this.pass = password;
+
+
+
+
+	public void setPassword(String pass) {
+		this.pass = pass;
 	}
 
-	private static final long serialVersionUID = 1L; 
+
+
+
+
+
+
+	private static final long serialVersionUID = 1L;
+
+	 
 }
