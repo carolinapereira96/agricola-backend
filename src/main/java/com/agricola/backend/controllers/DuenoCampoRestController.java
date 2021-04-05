@@ -39,7 +39,7 @@ public class DuenoCampoRestController {
  
     @PostMapping("/duenos") 
 	@ResponseStatus(HttpStatus.CREATED)
-	public DuenoCampo creaDuenoCampo(@RequestBody DuenoCampo dueno) {
+	public DuenoCampo crearDueno(@RequestBody DuenoCampo dueno) {
 		return duenoCampoService.save(dueno);
 	}
 
@@ -57,7 +57,7 @@ public class DuenoCampoRestController {
 
 	@DeleteMapping("/duenos/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT) 
-	public void eliminarAdministrador(@PathVariable Long id) {
+	public void eliminarDueno(@PathVariable Long id) {
 		duenoCampoService.delete(id);
 	}
  

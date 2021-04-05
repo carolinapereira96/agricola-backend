@@ -18,28 +18,24 @@ public class DuenoCampoServiceImpl implements IDuenoCampoService{
 	@Override
 	@Transactional(readOnly = true)
 	public List<DuenoCampo> findAll() {
-		// TODO Auto-generated method stub
 		return (List<DuenoCampo>) duenoCampoDao.findAll();
 	}
 
 	@Override
 	@Transactional
 	public DuenoCampo save(DuenoCampo duenoCampo) {
-		// TODO Auto-generated method stub
 		return duenoCampoDao.save(duenoCampo);
 	}
 
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
 		duenoCampoDao.deleteById(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public DuenoCampo findById(Long id) {
-		// TODO Auto-generated method stub
 		return duenoCampoDao.findById(id).orElse(null);
 	}
 }

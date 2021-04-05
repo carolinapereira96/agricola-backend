@@ -17,14 +17,12 @@ public class FertilizanteServiceImpl implements IFertilizanteService{
 	@Override
 	@Transactional(readOnly = true)
 	public List<Fertilizante> findAll() {
-		// TODO Auto-generated method stub
 		return (List<Fertilizante>) fertilizanteDao.findAll();
 	}
 
 	@Override
 	@Transactional
 	public Fertilizante save(Fertilizante fertilizante) {
-		// TODO Auto-generated method stub
 		return fertilizanteDao.save(fertilizante);
 	}
 
@@ -38,7 +36,6 @@ public class FertilizanteServiceImpl implements IFertilizanteService{
 	@Override
 	@Transactional(readOnly = true)
 	public Fertilizante findById(Long id) {
-		// TODO Auto-generated method stub
 		return fertilizanteDao.findById(id).orElse(null);
 	}
 

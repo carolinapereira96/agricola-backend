@@ -17,7 +17,6 @@ public class AdministradorServiceImpl implements IAdministradorService{
 	@Override
 	@Transactional(readOnly = true)
 	public List<Administrador> findAll() {
-		// TODO Auto-generated method stub
 		return (List<Administrador>) administradorDao.findAll();
 	}
 
@@ -30,14 +29,12 @@ public class AdministradorServiceImpl implements IAdministradorService{
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
 		 administradorDao.deleteById(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Administrador findById(Long id) {
-		// TODO Auto-generated method stub
 		return administradorDao.findById(id).orElse(null);
 	}
 
