@@ -10,8 +10,8 @@ public interface IEncargadoBPAService {
 	
 	public EncargadoBPA save(EncargadoBPA encargadoBPA);
 	
-	public void delete(Long id);
+	public void delete(String id);
 	
-	public EncargadoBPA findById(Long id);
+	public EncargadoBPA findById(String id);
 
 }

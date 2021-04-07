@@ -29,14 +29,14 @@ public class EncargadoBPAServiceImpl implements IEncargadoBPAService {
 
 	@Override
 	@Transactional
-	public void delete(Long id) {
-		encargadoBPADao.deleteById(id);
+	public void delete(String run) {
+		encargadoBPADao.deleteById(run);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public EncargadoBPA findById(Long id) {
-		return encargadoBPADao.findById(id).orElse(null);
+	public EncargadoBPA findById(String run) {
+		return encargadoBPADao.findById(run).orElse(null);
 	}
 
 }

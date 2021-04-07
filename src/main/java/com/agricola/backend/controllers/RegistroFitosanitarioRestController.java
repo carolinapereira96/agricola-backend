@@ -30,8 +30,8 @@ public class RegistroFitosanitarioRestController {
 	}
 	
 	@GetMapping("/registrosFitosanitarios/{id}") // okei
-	public RegistroFitosanitario buscarRegistroFitosanitarioById(@PathVariable Long id) {
-		return registroFitosanitarioService.findById(id);
+	public RegistroFitosanitario buscarRegistroFitosanitarioById(@PathVariable String run) {
+		return registroFitosanitarioService.findById(run);
 	}
 
 	@PostMapping("/registrosFitosanitarios")
@@ -42,9 +42,9 @@ public class RegistroFitosanitarioRestController {
 
 	@PutMapping("/registrosFitosanitarios/{id}")
 	@ResponseStatus(HttpStatus.CREATED)  // okei
-	public RegistroFitosanitario actualizarFitosanitario(@RequestBody RegistroFitosanitario registroFitosanitario, @PathVariable Long id) {
+	public RegistroFitosanitario actualizarFitosanitario(@RequestBody RegistroFitosanitario registroFitosanitario, @PathVariable String run) {
 
-		RegistroFitosanitario registroFitosanitarioActual = registroFitosanitarioService.findById(id);
+		RegistroFitosanitario registroFitosanitarioActual = registroFitosanitarioService.findById(run);
 
 		registroFitosanitarioActual.setTipoMaquinaria(registroFitosanitario.getTipoMaquinaria());
 		registroFitosanitarioActual.setEstadoFenologico(registroFitosanitario.getEstadoFenologico());
@@ -60,9 +60,9 @@ public class RegistroFitosanitarioRestController {
 
 	@DeleteMapping("/registrosFitosanitarios/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT) // okei
-	public void eliminarRegistroFitosanitario(@PathVariable Long id) {
+	public void eliminarRegistroFitosanitario(@PathVariable String run) {
 
-		registroFitosanitarioService.delete(id);
+		registroFitosanitarioService.delete(run);
 	}
 
 }

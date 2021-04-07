@@ -19,7 +19,7 @@ public class RegistroFitosanitario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_registro_fitosanitario")
-	private Long idRegistroFitosanitario;
+	private String idRegistroFitosanitario;
 
 	// length para definir tamaño, updatable para si es actualizable y nullable para ver si acepta null
 	@Column(name = "tipo_maquinaria", length = 25, nullable = false, updatable = true)
@@ -41,20 +41,31 @@ public class RegistroFitosanitario implements Serializable {
 	@Column(name = "condiciones_metereologicas", length = 25, nullable = false, updatable = true)
 	private String condicionesMetereologicas;
 
-	@Column(name = "id_encargado_bpa", nullable = false, updatable = true)
-	private Long idEncargadoBPA;
+	@Column(name = "run_encargado_bpa", nullable = false, updatable = true)
+	private String runEncargadoBPA;
 
 	@Column(name = "id_fitosanitario", nullable = false, updatable = true)
 	private Long idFitosanitario;
 	
+	@Column(name = "id_cuartel", nullable = false, updatable = false)
+	private Long idCuartel;
+	
 	
 	
 
-	public Long getIdRegistroFitosanitario() {
+	public Long getIdCuartel() {
+		return idCuartel;
+	}
+
+	public void setIdCuartel(Long idCuartel) {
+		this.idCuartel = idCuartel;
+	}
+
+	public String getIdRegistroFitosanitario() {
 		return idRegistroFitosanitario;
 	}
 
-	public void setIdRegistroFitosanitario(Long idRegistroFitosanitario) {
+	public void setIdRegistroFitosanitario(String idRegistroFitosanitario) {
 		this.idRegistroFitosanitario = idRegistroFitosanitario;
 	}
 
@@ -106,12 +117,12 @@ public class RegistroFitosanitario implements Serializable {
 		this.condicionesMetereologicas = condicionesMetereologicas;
 	}
 
-	public Long getIdEncargadoBPA() {
-		return idEncargadoBPA;
+	public String getIdEncargadoBPA() {
+		return runEncargadoBPA;
 	}
 
-	public void setIdEncargadoBPA(Long idEncargadoBPA) {
-		this.idEncargadoBPA = idEncargadoBPA;
+	public void setIdEncargadoBPA(String idEncargadoBPA) {
+		this.runEncargadoBPA = idEncargadoBPA;
 	}
 
 	public Long getIdFitosanitario() {

@@ -28,9 +28,9 @@ public class EncargadoBPARestController {
 		return encargadoBPAService.findAll();
 	}
 
-	@GetMapping("/encargadosBPA/{id}") // okei
-	public EncargadoBPA buscarEncargadoBPAById(@PathVariable Long id) {
-		return encargadoBPAService.findById(id);
+	@GetMapping("/encargadosBPA/{run}") // okei
+	public EncargadoBPA buscarEncargadoBPAById(@PathVariable String run) {
+		return encargadoBPAService.findById(run);
 	}
 
 	@PostMapping("/encargadosBPA")
@@ -39,14 +39,13 @@ public class EncargadoBPARestController {
 		return encargadoBPAService.save(encargadoBPA);
 	}
 
-	@PutMapping("/encargadosBPA/{id}")
+	@PutMapping("/encargadosBPA/{run}")
 	@ResponseStatus(HttpStatus.CREATED) // okei
-	public EncargadoBPA actualizarEncargadoBPA(@RequestBody EncargadoBPA encargadoBPA, @PathVariable Long id) {
+	public EncargadoBPA actualizarEncargadoBPA(@RequestBody EncargadoBPA encargadoBPA, @PathVariable String run) {
 
-		EncargadoBPA encargadoBPAActual = encargadoBPAService.findById(id);
-
+		EncargadoBPA encargadoBPAActual = encargadoBPAService.findById(run);
+		
 		encargadoBPAActual.setNombre(encargadoBPA.getNombre());
-		encargadoBPAActual.setRut(encargadoBPA.getRut());
 		encargadoBPAActual.setTelefono(encargadoBPA.getTelefono());
 		encargadoBPAActual.setEmail(encargadoBPA.getEmail());
 		encargadoBPAActual.setPass(encargadoBPA.getPass());
@@ -55,10 +54,10 @@ public class EncargadoBPARestController {
 
 	}
 
-	@DeleteMapping("/encargadosBPA/{id}")
+	@DeleteMapping("/encargadosBPA/{run}")
 	@ResponseStatus(HttpStatus.NO_CONTENT) // okei
-	public void eliminarEncargadoBPA(@PathVariable Long id) {
+	public void eliminarEncargadoBPA(@PathVariable String run) {
 
-		encargadoBPAService.delete(id);
+		encargadoBPAService.delete(run);
 	}
 }

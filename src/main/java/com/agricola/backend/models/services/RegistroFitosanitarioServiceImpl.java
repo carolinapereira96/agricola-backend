@@ -29,15 +29,15 @@ public class RegistroFitosanitarioServiceImpl implements IRegistroFitosanitarioS
 
 	@Override
 	@Transactional
-	public void delete(Long id) {
-		registroFitosanitarioDao.deleteById(id);
+	public void delete(String run) {
+		registroFitosanitarioDao.deleteById(run);
 
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public RegistroFitosanitario findById(Long id) {
-		return registroFitosanitarioDao.findById(id).orElse(null);
+	public RegistroFitosanitario findById(String run) {
+		return registroFitosanitarioDao.findById(run).orElse(null);
 	}
 
 }
