@@ -7,22 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
-
 @Entity
-@Table(name="administradores_campo")
-public class Administrador  implements Serializable{
-	
+@Table(name="duenos_campo")
+public class DuenoCampo implements Serializable{
+
 	@Id
 	@Column(name="run")
 	private String run;
- 
+	
 	@Column(length = 50, nullable = false, updatable = true) 
 	private String nombre;
 
-
-	@Column(length = 12, nullable = false, updatable = false)
-	private String telefono;
 
 	@Column(length = 50, nullable = false, updatable = true)
 	private String email;
@@ -30,41 +25,22 @@ public class Administrador  implements Serializable{
 	@Column(length = 15, nullable = false, updatable = true) 
 	private String pass;
 	
-	
+
 	
 	public String getRun() {
 		return run;
 	}
 
-
-
-	public void setRun(String id) {
-		this.run = id;
+	public void setRun(String idDuenoCampo) {
+		this.run = idDuenoCampo;
 	}
-
-
 
 	public String getNombre() {
 		return nombre;
 	}
 
-
-
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-
-
-
-
-	public String getTelefono() {
-		return telefono;
-	}
-
-
-
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
 	}
 
 
@@ -75,9 +51,17 @@ public class Administrador  implements Serializable{
 
 
 
+
+
+
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+
+
+
 
 
 
@@ -87,9 +71,21 @@ public class Administrador  implements Serializable{
 
 
 
-	public void setPassword(String password) {
-		this.pass = password;
+
+
+
+
+	public void setPassword(String pass) {
+		this.pass = pass;
 	}
 
-	private static final long serialVersionUID = 1L; 
+
+
+
+
+
+
+	private static final long serialVersionUID = 1L;
+
+	 
 }
