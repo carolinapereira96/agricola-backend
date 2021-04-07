@@ -10,7 +10,7 @@ public interface IDuenoCampoService {
 	
 	public DuenoCampo save(DuenoCampo duenoCampo);
 
-	public void delete(Long id);
+	public void delete(String run);
 
-	public DuenoCampo findById(Long id);
+	public DuenoCampo findById(String run);
 }

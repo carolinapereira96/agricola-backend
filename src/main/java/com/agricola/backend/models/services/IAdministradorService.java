@@ -11,9 +11,9 @@ public interface IAdministradorService {
 	
 	public Administrador save(Administrador adm);
 
-	public void delete(Long id);
+	public void delete(String id);
 
-	public Administrador findById(Long id);
+	public Administrador findById(String run);
 
 	
 }

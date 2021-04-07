@@ -40,12 +40,25 @@ public class RegistroFertilizante implements Serializable{
 	@Column(name = "tipo_maquinaria", length = 25, nullable = false, updatable = true)
 	private String tipoMaquinaria;
 
-	@Column(name="id_encargado_bpa",nullable = false, updatable = true)
-	private int idEncargadoBPA;
+	@Column(name="run_encargado_bpa",nullable = false, updatable = true)
+	private String runEncargadoBPA;
 
 	@Column(name="id_fertilizante",nullable = false, updatable = true)
 	private int idFertilizante;
 	
+	@Column(name="id_cuartel",nullable = false, updatable = true)
+	private int idCuartel;
+	
+	public int getIdCuartel() {
+		return idCuartel;
+	}
+
+
+	public void setIdCuartel(int idCuartel) {
+		this.idCuartel = idCuartel;
+	}
+
+
 	public Long getIdRegistro() {
 		return idRegistro;
 	}
@@ -106,13 +119,15 @@ public class RegistroFertilizante implements Serializable{
 	}
 
 
-	public int getIdEncargadoBPA() {
-		return idEncargadoBPA;
+
+
+	public String getRunEncargadoBPA() {
+		return runEncargadoBPA;
 	}
 
 
-	public void setIdEncargadoBPA(int idEncargadoBPA) {
-		this.idEncargadoBPA = idEncargadoBPA;
+	public void setRunEncargadoBPA(String runEncargadoBPA) {
+		this.runEncargadoBPA = runEncargadoBPA;
 	}
 
 

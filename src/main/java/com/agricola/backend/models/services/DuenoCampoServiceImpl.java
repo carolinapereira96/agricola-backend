@@ -29,13 +29,13 @@ public class DuenoCampoServiceImpl implements IDuenoCampoService{
 
 	@Override
 	@Transactional
-	public void delete(Long id) {
-		duenoCampoDao.deleteById(id);
+	public void delete(String run) {
+		duenoCampoDao.deleteById(run);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public DuenoCampo findById(Long id) {
+	public DuenoCampo findById(String id) {
 		return duenoCampoDao.findById(id).orElse(null);
 	}
 }

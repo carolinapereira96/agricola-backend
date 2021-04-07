@@ -28,9 +28,9 @@ public class AdministradorRestController {
 			return administradorService.findAll();
 		}
 		 
-		 @GetMapping("/administradores/{id}")
-		 public Administrador buscarAdministrador(@PathVariable Long id) {
-				return administradorService.findById(id);
+		 @GetMapping("/administradores/{run}")
+		 public Administrador buscarAdministrador(@PathVariable String run) {
+				return administradorService.findById(run);
 	     }
 	 
 	    @PostMapping("/administradores") 
@@ -39,23 +39,22 @@ public class AdministradorRestController {
 			return administradorService.save(adm);
 		}
 
-		@PutMapping("/administradores/{id}") 
+		@PutMapping("/administradores/{run}") 
 		@ResponseStatus(HttpStatus.CREATED) 
-		public Administrador actualizarAdministrador(@RequestBody Administrador adm, @PathVariable Long id) {
+		public Administrador actualizarAdministrador(@RequestBody Administrador adm, @PathVariable String run) {
 
-			Administrador administradorActual = administradorService.findById(id);
+			Administrador administradorActual = administradorService.findById(run);
 			administradorActual.setNombre(adm.getNombre());
-			administradorActual.setRut(adm.getRut());
 			administradorActual.setTelefono(adm.getTelefono());
 			administradorActual.setEmail(adm.getEmail());
 			administradorActual.setPassword(adm.getPassword());
 			return administradorService.save(administradorActual);
 		}
 
-		@DeleteMapping("/administradores/{id}")
+		@DeleteMapping("/administradores/{run}")
 		@ResponseStatus(HttpStatus.NO_CONTENT) 
-		public void eliminarAdministrador(@PathVariable Long id) {
-			administradorService.delete(id);
+		public void eliminarAdministrador(@PathVariable String run) {
+			administradorService.delete(run);
 		}
 	 
 }

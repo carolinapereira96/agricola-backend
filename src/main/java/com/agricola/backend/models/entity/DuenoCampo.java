@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -14,24 +12,11 @@ import javax.persistence.Table;
 public class DuenoCampo implements Serializable{
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_dueno_campo")
-	private Long idDuenoCampo;
+	@Column(name="run")
+	private String run;
 	
 	@Column(length = 50, nullable = false, updatable = true) 
 	private String nombre;
-
-	@Column(length = 12, nullable = false, updatable = false)
-	private String rut;
-
-
-	public Long getIdDuenoCampo() {
-		return idDuenoCampo;
-	}
-
-	public void setIdDuenoCampo(Long idDuenoCampo) {
-		this.idDuenoCampo = idDuenoCampo;
-	}
 
 
 	@Column(length = 50, nullable = false, updatable = true)
@@ -41,6 +26,15 @@ public class DuenoCampo implements Serializable{
 	private String pass;
 	
 
+	
+	public String getRun() {
+		return run;
+	}
+
+	public void setRun(String idDuenoCampo) {
+		this.run = idDuenoCampo;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -48,30 +42,6 @@ public class DuenoCampo implements Serializable{
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
-
-	public String getRut() {
-		return rut;
-	}
-
-
-
-
-
-
-
-	public void setRut(String rut) {
-		this.rut = rut;
-	}
-
-
-
-
-
-
-
-
-
 
 
 

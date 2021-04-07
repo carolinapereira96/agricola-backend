@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,15 +14,12 @@ import javax.persistence.Table;
 public class Administrador  implements Serializable{
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_administrador_campo")
-	private Long idAdministrador;
+	@Column(name="run")
+	private String run;
  
 	@Column(length = 50, nullable = false, updatable = true) 
 	private String nombre;
 
-	@Column(length = 12, nullable = false, updatable = false)
-	private String rut;
 
 	@Column(length = 12, nullable = false, updatable = false)
 	private String telefono;
@@ -37,14 +32,14 @@ public class Administrador  implements Serializable{
 	
 	
 	
-	public Long getId() {
-		return idAdministrador;
+	public String getRun() {
+		return run;
 	}
 
 
 
-	public void setId(Long id) {
-		this.idAdministrador = id;
+	public void setRun(String id) {
+		this.run = id;
 	}
 
 
@@ -59,17 +54,6 @@ public class Administrador  implements Serializable{
 		this.nombre = nombre;
 	}
 
-
-
-	public String getRut() {
-		return rut;
-	}
-
-
-
-	public void setRut(String rut) {
-		this.rut = rut;
-	}
 
 
 

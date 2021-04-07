@@ -28,8 +28,8 @@ public class Cuartel implements Serializable{
 	@Column(name="tipo_uva",length = 25, nullable = false, updatable = true)
 	private String tipoUva;
 	
-	@Column(name="id_encargado_bpa", nullable = false, updatable = true)
-	private int idEncargadoBPA;
+	@Column(name="run_encargado_bpa", nullable = false, updatable = true)
+	private String runEncargadoBPA;
 	
 	@Column(name="id_predio", nullable = false, updatable = true)
 	private int idPredio;
@@ -97,15 +97,19 @@ public class Cuartel implements Serializable{
 
 
 
-	public int getIdEncargadoBPA() {
-		return idEncargadoBPA;
+
+
+
+
+	public String getRunEncargadoBPA() {
+		return runEncargadoBPA;
 	}
 
 
 
 
-	public void setIdEncargadoBPA(int idEncargadoBPA) {
-		this.idEncargadoBPA = idEncargadoBPA;
+	public void setRunEncargadoBPA(String runEncargadoBPA) {
+		this.runEncargadoBPA = runEncargadoBPA;
 	}
 
 

@@ -28,13 +28,13 @@ public class AdministradorServiceImpl implements IAdministradorService{
 
 	@Override
 	@Transactional
-	public void delete(Long id) {
+	public void delete(String id) {
 		 administradorDao.deleteById(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Administrador findById(Long id) {
+	public Administrador findById(String id) {
 		return administradorDao.findById(id).orElse(null);
 	}
 

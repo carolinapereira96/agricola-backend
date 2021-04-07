@@ -24,17 +24,15 @@ public class DuenoCampoRestController {
 	
 	@Autowired
 	 private IDuenoCampoService duenoCampoService;
-	
-	 
 	 
 	 @GetMapping("/duenos")
 	 public List<DuenoCampo> listarDuenos() {
 		return duenoCampoService.findAll();
 	}
 	 
-	 @GetMapping("/duenos/{id}")
-	 public DuenoCampo buscarDueno(@PathVariable Long id) {
-			return duenoCampoService.findById(id);
+	 @GetMapping("/duenos/{run}")
+	 public DuenoCampo buscarDueno(@PathVariable String run) {
+			return duenoCampoService.findById(run);
      }
  
     @PostMapping("/duenos") 
@@ -43,22 +41,21 @@ public class DuenoCampoRestController {
 		return duenoCampoService.save(dueno);
 	}
 
-	@PutMapping("/duenos/{id}") 
+	@PutMapping("/duenos/{run}") 
 	@ResponseStatus(HttpStatus.CREATED) 
-	public DuenoCampo actualizarDueno(@RequestBody DuenoCampo dueno, @PathVariable Long id) {
+	public DuenoCampo actualizarDueno(@RequestBody DuenoCampo dueno, @PathVariable String run) {
 
-		DuenoCampo duenoActual = duenoCampoService.findById(id);
+		DuenoCampo duenoActual = duenoCampoService.findById(run);
 		duenoActual.setNombre(dueno.getNombre());
-		duenoActual.setRut(dueno.getRut());
 		duenoActual.setEmail(dueno.getEmail());
 		duenoActual.setPassword(dueno.getPassword());
 		return duenoCampoService.save(duenoActual);
 	}
 
-	@DeleteMapping("/duenos/{id}")
+	@DeleteMapping("/duenos/{run}")
 	@ResponseStatus(HttpStatus.NO_CONTENT) 
-	public void eliminarDueno(@PathVariable Long id) {
-		duenoCampoService.delete(id);
+	public void eliminarDueno(@PathVariable String run) {
+		duenoCampoService.delete(run);
 	}
  
 }

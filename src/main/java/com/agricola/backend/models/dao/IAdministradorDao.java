@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.agricola.backend.models.entity.Administrador;
 
-public interface IAdministradorDao extends CrudRepository<Administrador,Long> {
+public interface IAdministradorDao extends CrudRepository<Administrador,String> {
 
 }
