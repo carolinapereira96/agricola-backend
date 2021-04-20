@@ -1,6 +1,7 @@
 package com.agricola.backend.models.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,9 @@ public class DuenoCampoServiceImpl implements IDuenoCampoService{
 	@Override
 	@Transactional(readOnly = true)
 	public List<DuenoCampo> findAll() {
-		return (List<DuenoCampo>) duenoCampoDao.findAll();
+		List<DuenoCampo> list1 = (List<DuenoCampo>) duenoCampoDao.findAll();
+	    List<DuenoCampo> listaFiltrada = list1.stream().filter(item->item.isEstado()).collect(Collectors.toList());
+	    return listaFiltrada;
 	}
 
 	@Override
@@ -30,7 +33,7 @@ public class DuenoCampoServiceImpl implements IDuenoCampoService{
 	@Override
 	@Transactional
 	public void delete(String run) {
-		duenoCampoDao.deleteById(run);
+		duenoCampoDao.findById(run).get().setEstado(false);
 	}
 
 	@Override

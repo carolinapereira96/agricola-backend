@@ -1,10 +1,11 @@
 package com.agricola.backend.models.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.agricola.backend.models.dao.IFertilizanteDao;
 import com.agricola.backend.models.entity.Fertilizante;
 
@@ -17,7 +18,9 @@ public class FertilizanteServiceImpl implements IFertilizanteService{
 	@Override
 	@Transactional(readOnly = true)
 	public List<Fertilizante> findAll() {
-		return (List<Fertilizante>) fertilizanteDao.findAll();
+		List<Fertilizante> list1 = (List<Fertilizante>) fertilizanteDao.findAll();
+	    List<Fertilizante> listaFiltrada = list1.stream().filter(item->item.isEstado()).collect(Collectors.toList());
+	    return listaFiltrada;
 	}
 
 	@Override
@@ -29,7 +32,7 @@ public class FertilizanteServiceImpl implements IFertilizanteService{
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		fertilizanteDao.deleteById(id);
+		fertilizanteDao.findById(id).get().setEstado(false);
 
 	}
 

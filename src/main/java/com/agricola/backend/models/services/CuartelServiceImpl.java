@@ -1,12 +1,14 @@
 package com.agricola.backend.models.services;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.agricola.backend.models.dao.ICuartelDao;
 import com.agricola.backend.models.entity.Cuartel;
+
+
 
 @Service
 public class CuartelServiceImpl implements ICuartelService {
@@ -18,7 +20,9 @@ public class CuartelServiceImpl implements ICuartelService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Cuartel> findAll() {
-		return (List<Cuartel>) cuartelDao.findAll();
+		List<Cuartel> list1 = (List<Cuartel>) cuartelDao.findAll();
+	    List<Cuartel> listaFiltrada = list1.stream().filter(item->item.isEstado()).collect(Collectors.toList());
+	    return listaFiltrada;
 	}
 
 	@Override
@@ -30,7 +34,7 @@ public class CuartelServiceImpl implements ICuartelService {
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		cuartelDao.deleteById(id);
+		cuartelDao.findById(id).get().setEstado(false);
 	}
 
 	@Override

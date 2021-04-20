@@ -1,5 +1,4 @@
 package com.agricola.backend.controllers;
-
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,11 +22,13 @@ public class AdministradorRestController {
 		 @Autowired
 		 private IAdministradorService administradorService;
 		 
+		
+		
 		 @GetMapping("/administradores")
 		 public List <Administrador> listarAdministradores() {
-			return administradorService.findAll();
+           return administradorService.findAll();
 		}
-		 
+		
 		 @GetMapping("/administradores/{run}")
 		 public Administrador buscarAdministrador(@PathVariable String run) {
 				return administradorService.findById(run);
