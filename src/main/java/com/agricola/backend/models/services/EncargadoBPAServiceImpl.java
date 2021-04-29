@@ -1,5 +1,6 @@
 package com.agricola.backend.models.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +19,29 @@ public class EncargadoBPAServiceImpl implements IEncargadoBPAService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<EncargadoBPA> findAll() {
-		return (List<EncargadoBPA>) encargadoBPADao.findAll();
+		
+		List<EncargadoBPA> listEncargadosBPA = (List<EncargadoBPA>) encargadoBPADao.findAll();
+		List<EncargadoBPA> listEncargadosBPAFiltrada = new ArrayList<EncargadoBPA>();
+		
+		for(int i=0; i < listEncargadosBPA.size(); i++) {
+			if(listEncargadosBPA.get(i).isEstado()) {
+				listEncargadosBPAFiltrada.add(listEncargadosBPA.get(i));
+			}
+		}		
+		return listEncargadosBPAFiltrada;
 	}
 
 	@Override
 	@Transactional
 	public EncargadoBPA save(EncargadoBPA encargadoBPA) {
+		encargadoBPA.setEstado(true);
 		return encargadoBPADao.save(encargadoBPA);
 	}
 
 	@Override
 	@Transactional
 	public void delete(String run) {
-		encargadoBPADao.deleteById(run);
+		encargadoBPADao.findById(run).orElse(null).setEstado(false);
 	}
 
 	@Override

@@ -35,12 +35,9 @@ public class Fitosanitario implements Serializable {
 	@Column(nullable = false, updatable = true)
 	private int carencia;
 
-	
-	
-	
-	
-	
-	
+	@Column(length = 1, nullable = false, updatable = true)
+	private boolean estado;
+
 	public Long getIdFitosanitario() {
 		return idFitosanitario;
 	}
@@ -87,6 +84,14 @@ public class Fitosanitario implements Serializable {
 
 	public void setCarencia(int carencia) {
 		this.carencia = carencia;
+	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
 	}
 
 	private static final long serialVersionUID = 1L;

@@ -1,5 +1,6 @@
 package com.agricola.backend.models.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +19,31 @@ public class FitosanitarioServiceImpl implements IFitosanitarioService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Fitosanitario> findAll() {
-		return (List<Fitosanitario>) fitosanitarioDao.findAll();
+		
+		List<Fitosanitario> listFitosanitario = (List<Fitosanitario>) fitosanitarioDao.findAll();
+		List<Fitosanitario> listFitosanitarioFiltrada = new ArrayList<Fitosanitario>();
+		for(int i=0; i < listFitosanitario.size(); i++) {
+			if(listFitosanitario.get(i).isEstado()) {
+				listFitosanitarioFiltrada.add(listFitosanitario.get(i));
+			}
+		}		
+		return listFitosanitarioFiltrada;
 	}
 
 	@Override
 	@Transactional
 	public Fitosanitario save(Fitosanitario fitosanitario) {
+		fitosanitario.setEstado(true);
 		return fitosanitarioDao.save(fitosanitario);
 	}
 
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		fitosanitarioDao.deleteById(id);
+		
+		Fitosanitario fitosaniratio = fitosanitarioDao.findById(id).orElse(null);
+		fitosaniratio.setEstado(false);
+		//fitosanitarioDao.deleteById(id);
 	}
 
 	@Override

@@ -27,8 +27,9 @@ public class Predio implements Serializable {
 	@Column(name = "id_campo", nullable = false, updatable = true)
 	private Long idCampo;
 
-	
-	
+	@Column(length = 1, nullable = false, updatable = true)
+	private boolean estado;
+
 	public Long getIdPredio() {
 		return idPredio;
 	}
@@ -59,6 +60,14 @@ public class Predio implements Serializable {
 
 	public void setIdCampo(Long idCampo) {
 		this.idCampo = idCampo;
+	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
 	}
 
 	private static final long serialVersionUID = 1L;

@@ -28,13 +28,14 @@ public class Campo implements Serializable {
 	private int hectareas;
 
 	@Column(name = "run_dueno_campo", nullable = false, updatable = true)
-	private Long runDuenoCampo;
+	private String runDuenoCampo;
 
 	@Column(name = "run_administrador_campo", nullable = false, updatable = true)
-	private Long runAdministradorCampo;
+	private String runAdministradorCampo;
 
-	
-	
+	@Column(length = 1, nullable = false, updatable = true)
+	private boolean estado;
+
 	public Long getIdCampo() {
 		return idCampo;
 	}
@@ -67,20 +68,28 @@ public class Campo implements Serializable {
 		this.hectareas = hectareas;
 	}
 
-	public Long getIdDuenoCampo() {
-		return runAdministradorCampo;
-	}
-
-	public void setIdDuenoCampo(Long idDuenoCampo) {
-		this.runAdministradorCampo = idDuenoCampo;
-	}
-
-	public Long getIdAdministradorCampo() {
+	public String getRunDuenoCampo() {
 		return runDuenoCampo;
 	}
 
-	public void setIdAdministradorCampo(Long idAdministradorCampo) {
-		this.runDuenoCampo = idAdministradorCampo;
+	public void setRunDuenoCampo(String runDuenoCampo) {
+		this.runDuenoCampo = runDuenoCampo;
+	}
+
+	public String getRunAdministradorCampo() {
+		return runAdministradorCampo;
+	}
+
+	public void setRunAdministradorCampo(String runAdministradorCampo) {
+		this.runAdministradorCampo = runAdministradorCampo;
+	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
 	}
 
 	private static final long serialVersionUID = 1L;

@@ -1,5 +1,6 @@
 package com.agricola.backend.models.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,16 @@ public class PredioServiceImpl implements IPredioService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Predio> findAll() {
-		return (List<Predio>) predioDao.findAll();
+		
+		List<Predio> listPredios = (List<Predio>) predioDao.findAll();
+		List<Predio> listPrediosFiltrada = new ArrayList<Predio>();
+		
+		for(int i=0; i < listPredios.size(); i++) {
+			if(listPredios.get(i).isEstado()) {
+				listPrediosFiltrada.add(listPredios.get(i));
+			}
+		}		
+		return listPrediosFiltrada;
 	}
 
 	@Override
@@ -30,8 +40,7 @@ public class PredioServiceImpl implements IPredioService {
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		predioDao.deleteById(id);
-
+		predioDao.findById(id).orElse(null).setEstado(false);
 	}
 
 	@Override

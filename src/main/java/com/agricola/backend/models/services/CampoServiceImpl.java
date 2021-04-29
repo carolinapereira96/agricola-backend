@@ -1,5 +1,6 @@
 package com.agricola.backend.models.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,16 @@ public class CampoServiceImpl implements ICampoService{
 	@Override
 	@Transactional(readOnly = true)
 	public List<Campo> findAll() {
-		// TODO Auto-generated method stub
-		return (List<Campo>) campoDao.findAll();
+		
+		List<Campo> listCampos = (List<Campo>) campoDao.findAll();
+		List<Campo> listCamposFiltrada = new ArrayList<Campo>();
+		
+		for(int i=0; i < listCampos.size(); i++) {
+			if(listCampos.get(i).isEstado()) {
+				listCamposFiltrada.add(listCampos.get(i));
+			}
+		}		
+		return listCamposFiltrada;
 	}
 
 	@Override
@@ -31,7 +40,7 @@ public class CampoServiceImpl implements ICampoService{
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		campoDao.deleteById(id);
+		campoDao.findById(id).orElse(null).setEstado(false);
 		
 	}
 
