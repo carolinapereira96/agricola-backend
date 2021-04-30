@@ -34,6 +34,7 @@ public class CampoServiceImpl implements ICampoService{
 	@Override
 	@Transactional
 	public Campo save(Campo campo) {
+		campo.setEstado(true);
 		return campoDao.save(campo);
 	}
 

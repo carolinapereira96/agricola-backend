@@ -34,6 +34,7 @@ public class PredioServiceImpl implements IPredioService {
 	@Override
 	@Transactional
 	public Predio save(Predio predio) {
+		predio.setEstado(true);
 		return predioDao.save(predio);
 	}
 
