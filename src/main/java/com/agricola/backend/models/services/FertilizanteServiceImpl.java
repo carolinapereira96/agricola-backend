@@ -26,6 +26,7 @@ public class FertilizanteServiceImpl implements IFertilizanteService{
 	@Override
 	@Transactional
 	public Fertilizante save(Fertilizante fertilizante) {
+		fertilizante.setEstado(true);
 		return fertilizanteDao.save(fertilizante);
 	}
 

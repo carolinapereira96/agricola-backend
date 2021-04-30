@@ -28,6 +28,7 @@ public class CuartelServiceImpl implements ICuartelService {
 	@Override
 	@Transactional
 	public Cuartel save(Cuartel cuartel) {
+		cuartel.setEstado(true);
 		return cuartelDao.save(cuartel);
 	}
 

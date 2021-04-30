@@ -26,6 +26,7 @@ public class AdministradorServiceImpl implements IAdministradorService{
 	@Override
 	@Transactional
 	public Administrador save(Administrador administrador) {
+		administrador.setEstado(true);
 		return administradorDao.save(administrador);
 	}
 

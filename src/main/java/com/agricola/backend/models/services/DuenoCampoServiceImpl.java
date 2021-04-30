@@ -27,6 +27,7 @@ public class DuenoCampoServiceImpl implements IDuenoCampoService{
 	@Override
 	@Transactional
 	public DuenoCampo save(DuenoCampo duenoCampo) {
+		duenoCampo.setEstado(true);
 		return duenoCampoDao.save(duenoCampo);
 	}
 
