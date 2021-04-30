@@ -25,7 +25,21 @@ public class DuenoCampo implements Serializable{
 	@Column(length = 15, nullable = false, updatable = true) 
 	private String pass;
 	
+	@Column(nullable = false, updatable = true)
+	private boolean estado;
+	
+	
+	
 
+	public boolean isEstado() {
+		return estado;
+	}
+
+
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
 	
 	public String getRun() {
 		return run;

@@ -9,6 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * @author Laboratorio
+ *
+ */
 @Entity
 @Table(name="fertilizantes")
 public class Fertilizante implements Serializable {
@@ -32,6 +36,23 @@ public class Fertilizante implements Serializable {
 	@Column(nullable = false, updatable = true)
 	private double concentracion;
 	
+	@Column(nullable = false, updatable = true)
+	private boolean estado;
+	
+	
+	
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+
+
 
 	public Long getIdFertilizante() {
 		return idFertilizante;
