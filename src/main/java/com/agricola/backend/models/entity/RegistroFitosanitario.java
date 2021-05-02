@@ -19,7 +19,7 @@ public class RegistroFitosanitario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_registro_fitosanitario")
-	private String idRegistroFitosanitario;
+	private Long idRegistroFitosanitario;
 
 	// length para definir tamaño, updatable para si es actualizable y nullable para ver si acepta null
 	@Column(name = "tipo_maquinaria", length = 25, nullable = false, updatable = true)
@@ -61,11 +61,11 @@ public class RegistroFitosanitario implements Serializable {
 		this.idCuartel = idCuartel;
 	}
 
-	public String getIdRegistroFitosanitario() {
+	public Long getIdRegistroFitosanitario() {
 		return idRegistroFitosanitario;
 	}
 
-	public void setIdRegistroFitosanitario(String idRegistroFitosanitario) {
+	public void setIdRegistroFitosanitario(Long idRegistroFitosanitario) {
 		this.idRegistroFitosanitario = idRegistroFitosanitario;
 	}
 

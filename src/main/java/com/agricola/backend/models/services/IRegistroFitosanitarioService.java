@@ -10,8 +10,8 @@ public interface IRegistroFitosanitarioService {
 	
 	public RegistroFitosanitario save(RegistroFitosanitario registroFitosanitario);
 
-	public void delete(String id);
+	public void delete(Long id);
 
-	public RegistroFitosanitario findById(String id);
+	public RegistroFitosanitario findById(Long id);
 
 }
