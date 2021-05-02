@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.agricola.backend.models.entity.RegistroFitosanitario;
 import com.agricola.backend.models.services.IRegistroFitosanitarioService;
 
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("/api")
 public class RegistroFitosanitarioRestController {
@@ -30,8 +32,8 @@ public class RegistroFitosanitarioRestController {
 	}
 	
 	@GetMapping("/registrosFitosanitarios/{id}") // okei
-	public RegistroFitosanitario buscarRegistroFitosanitarioById(@PathVariable String run) {
-		return registroFitosanitarioService.findById(run);
+	public RegistroFitosanitario buscarRegistroFitosanitarioById(@PathVariable Long id) {
+		return registroFitosanitarioService.findById(id);
 	}
 
 	@PostMapping("/registrosFitosanitarios")
@@ -42,9 +44,9 @@ public class RegistroFitosanitarioRestController {
 
 	@PutMapping("/registrosFitosanitarios/{id}")
 	@ResponseStatus(HttpStatus.CREATED)  // okei
-	public RegistroFitosanitario actualizarFitosanitario(@RequestBody RegistroFitosanitario registroFitosanitario, @PathVariable String run) {
+	public RegistroFitosanitario actualizarFitosanitario(@RequestBody RegistroFitosanitario registroFitosanitario, @PathVariable Long id) {
 
-		RegistroFitosanitario registroFitosanitarioActual = registroFitosanitarioService.findById(run);
+		RegistroFitosanitario registroFitosanitarioActual = registroFitosanitarioService.findById(id);
 
 		registroFitosanitarioActual.setTipoMaquinaria(registroFitosanitario.getTipoMaquinaria());
 		registroFitosanitarioActual.setEstadoFenologico(registroFitosanitario.getEstadoFenologico());
@@ -60,9 +62,9 @@ public class RegistroFitosanitarioRestController {
 
 	@DeleteMapping("/registrosFitosanitarios/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT) // okei
-	public void eliminarRegistroFitosanitario(@PathVariable String run) {
+	public void eliminarRegistroFitosanitario(@PathVariable Long id) {
 
-		registroFitosanitarioService.delete(run);
+		registroFitosanitarioService.delete(id);
 	}
 
 }
