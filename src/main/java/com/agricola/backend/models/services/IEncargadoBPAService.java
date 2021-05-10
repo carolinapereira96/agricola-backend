@@ -13,5 +13,13 @@ public interface IEncargadoBPAService {
 	public void delete(String id);
 	
 	public EncargadoBPA findById(String id);
+	
+	public EncargadoBPA findEncargadoByRun(String run);
+	
+	public EncargadoBPA findEncargadoByTelefono(String telefono);
+	
+	public EncargadoBPA findEncargadoByEmail(String email);
+	
+	public EncargadoBPA findEncargadoByPass(String pass);
 
 }

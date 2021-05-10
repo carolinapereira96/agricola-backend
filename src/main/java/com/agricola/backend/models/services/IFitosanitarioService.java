@@ -13,5 +13,11 @@ public interface IFitosanitarioService {
 	public void delete(Long id);
 
 	public Fitosanitario findById(Long id);
+	
+	public Fitosanitario findFitosanitarioByNombre(String nombre);
+	
+	public Fitosanitario findFitosanitarioByObjetivo(String objetivo);
+	
+	public Fitosanitario findFitosanitarioByIngredienteActivo(String ingrediente);
 
 }

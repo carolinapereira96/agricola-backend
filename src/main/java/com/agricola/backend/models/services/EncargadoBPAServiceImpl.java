@@ -50,4 +50,24 @@ public class EncargadoBPAServiceImpl implements IEncargadoBPAService {
 		return encargadoBPADao.findById(run).orElse(null);
 	}
 
+	@Override
+	public EncargadoBPA findEncargadoByRun(String run) {
+		return encargadoBPADao.findEncargadoByRun(run);
+	}
+
+	@Override
+	public EncargadoBPA findEncargadoByTelefono(String telefono) {
+		return encargadoBPADao.findEncargadoByTelefono(telefono);
+	}
+
+	@Override
+	public EncargadoBPA findEncargadoByEmail(String email) {
+		return encargadoBPADao.findEncargadoByEmail(email);
+	}
+
+	@Override
+	public EncargadoBPA findEncargadoByPass(String pass) {
+		return encargadoBPADao.findEncargadoByPass(pass);
+	}
+
 }

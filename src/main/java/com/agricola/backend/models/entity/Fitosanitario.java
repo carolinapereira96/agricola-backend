@@ -15,7 +15,7 @@ public class Fitosanitario implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_fitosanitario")
+	@Column(name = "id_fitosanitario", nullable = false, unique=true)
 	private Long idFitosanitario;
 
 	// length para definir tamaño, updatable para si es actualizable y nullable para

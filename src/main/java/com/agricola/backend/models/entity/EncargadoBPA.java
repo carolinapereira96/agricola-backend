@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class EncargadoBPA implements Serializable {
 
 	@Id
-	@Column(name = "run")
+	@Column(name = "run", nullable = false, unique=true)
 	private String run;
 
 	// length para definir tamaño, updatable para si es actualizable y nullable para
@@ -20,13 +20,13 @@ public class EncargadoBPA implements Serializable {
 	@Column(length = 50, nullable = false, updatable = true)
 	private String nombre;
 
-	@Column(length = 12, nullable = false, updatable = false)
+	@Column(length = 12, nullable = false, updatable = true, unique = true)
 	private String telefono;
 
-	@Column(length = 50, nullable = false, updatable = true)
+	@Column(length = 50, nullable = false, updatable = true, unique = true)
 	private String email;
 
-	@Column(length = 16, nullable = false, updatable = true)
+	@Column(length = 16, nullable = false, updatable = true, unique = true)
 	private String pass;
 	
 	@Column(length = 1, nullable = false, updatable = true)

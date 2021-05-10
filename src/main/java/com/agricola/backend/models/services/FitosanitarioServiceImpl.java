@@ -52,4 +52,21 @@ public class FitosanitarioServiceImpl implements IFitosanitarioService {
 		return fitosanitarioDao.findById(id).orElse(null);
 	}
 
+	@Override
+	public Fitosanitario findFitosanitarioByNombre(String nombre) {
+		return fitosanitarioDao.findFitosanitarioByNombre(nombre);
+		
+	}
+
+	@Override
+	public Fitosanitario findFitosanitarioByObjetivo(String objetivo) {
+		return fitosanitarioDao.findFitosanitarioByObjetivo(objetivo);
+	}
+
+	@Override
+	public Fitosanitario findFitosanitarioByIngredienteActivo(String ingrediente) {
+
+		return fitosanitarioDao.findFitosanitarioByIngredienteActivo(ingrediente);
+	}
+
 }
