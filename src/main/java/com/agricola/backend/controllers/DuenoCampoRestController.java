@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,34 +19,37 @@ import org.springframework.web.bind.annotation.RestController;
 import com.agricola.backend.models.entity.DuenoCampo;
 import com.agricola.backend.models.services.IDuenoCampoService;
 
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 @RequestMapping("/api")
 public class DuenoCampoRestController {
 
-	
 	@Autowired
-	 private IDuenoCampoService duenoCampoService;
-	 
-	 @GetMapping("/duenos")
-	 public List<DuenoCampo> listarDuenos() {
+	private IDuenoCampoService duenoCampoService;
+
+	@Secured("ROLE_ADMIN")
+	@GetMapping("/duenos")
+	public List<DuenoCampo> listarDuenos() {
 		return duenoCampoService.findAll();
 	}
-	 
-	 @GetMapping("/duenos/{run}")
-	 public DuenoCampo buscarDueno(@PathVariable String run) {
-			return duenoCampoService.findById(run);
-     }
- 
-    @PostMapping("/duenos") 
+
+	@Secured("ROLE_ADMIN")
+	@GetMapping("/duenos/{run}")
+	public DuenoCampo buscarDueno(@PathVariable String run) {
+		return duenoCampoService.findById(run);
+	}
+
+	@Secured("ROLE_ADMIN")
+	@PostMapping("/duenos")
 	@ResponseStatus(HttpStatus.CREATED)
 	public DuenoCampo crearDueno(@RequestBody DuenoCampo dueno) {
 
 		return duenoCampoService.save(dueno);
 	}
 
-	@PutMapping("/duenos/{run}") 
-	@ResponseStatus(HttpStatus.CREATED) 
+	@Secured("ROLE_ADMIN")
+	@PutMapping("/duenos/{run}")
+	@ResponseStatus(HttpStatus.CREATED)
 	public DuenoCampo actualizarDueno(@RequestBody DuenoCampo dueno, @PathVariable String run) {
 
 		DuenoCampo duenoActual = duenoCampoService.findById(run);
@@ -55,10 +59,11 @@ public class DuenoCampoRestController {
 		return duenoCampoService.save(duenoActual);
 	}
 
+	@Secured("ROLE_ADMIN")
 	@DeleteMapping("/duenos/{run}")
-	@ResponseStatus(HttpStatus.NO_CONTENT) 
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void eliminarDueno(@PathVariable String run) {
 		duenoCampoService.delete(run);
 	}
- 
+
 }

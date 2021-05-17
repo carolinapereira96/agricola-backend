@@ -1,7 +1,9 @@
 package com.agricola.backend.controllers;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,49 +18,52 @@ import org.springframework.web.bind.annotation.RestController;
 import com.agricola.backend.models.entity.Administrador;
 import com.agricola.backend.models.services.IAdministradorService;
 
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 @RequestMapping("/api")
 public class AdministradorRestController {
 
-		 @Autowired
-		 private IAdministradorService administradorService;
-		 
-		
-		
-		 @GetMapping("/administradores")
-		 public List <Administrador> listarAdministradores() {
-           return administradorService.findAll();
-		}
-		
-		 @GetMapping("/administradores/{run}")
-		 public Administrador buscarAdministrador(@PathVariable String run) {
-				return administradorService.findById(run);
-	     }
-	 
-	    @PostMapping("/administradores") 
-		@ResponseStatus(HttpStatus.CREATED)
-		public Administrador crearAdministrador(@RequestBody Administrador adm) {
-	    
-			return administradorService.save(adm);
-		}
+	@Autowired
+	private IAdministradorService administradorService;
 
-		@PutMapping("/administradores/{run}") 
-		@ResponseStatus(HttpStatus.CREATED) 
-		public Administrador actualizarAdministrador(@RequestBody Administrador adm, @PathVariable String run) {
+	@Secured({ "ROLE_ADMIN", "ROLE_DUENO" })
+	@GetMapping("/administradores")
+	public List<Administrador> listarAdministradores() {
+		return administradorService.findAll();
+	}
 
-			Administrador administradorActual = administradorService.findById(run);
-			administradorActual.setNombre(adm.getNombre());
-			administradorActual.setTelefono(adm.getTelefono());
-			administradorActual.setEmail(adm.getEmail());
-			administradorActual.setPassword(adm.getPassword());
-			return administradorService.save(administradorActual);
-		}
+	@Secured({ "ROLE_ADMIN", "ROLE_DUENO" })
+	@GetMapping("/administradores/{run}")
+	public Administrador buscarAdministrador(@PathVariable String run) {
+		return administradorService.findById(run);
+	}
 
-		@DeleteMapping("/administradores/{run}")
-		@ResponseStatus(HttpStatus.NO_CONTENT) 
-		public void eliminarAdministrador(@PathVariable String run) {
-			administradorService.delete(run);
-		}
-	 
+	@Secured({ "ROLE_ADMIN", "ROLE_DUENO" })
+	@PostMapping("/administradores")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Administrador crearAdministrador(@RequestBody Administrador adm) {
+
+		return administradorService.save(adm);
+	}
+
+	@Secured({ "ROLE_ADMIN", "ROLE_DUENO" })
+	@PutMapping("/administradores/{run}")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Administrador actualizarAdministrador(@RequestBody Administrador adm, @PathVariable String run) {
+
+		Administrador administradorActual = administradorService.findById(run);
+		administradorActual.setNombre(adm.getNombre());
+		administradorActual.setTelefono(adm.getTelefono());
+		administradorActual.setEmail(adm.getEmail());
+		administradorActual.setPassword(adm.getPassword());
+		return administradorService.save(administradorActual);
+	}
+
+	@Secured({ "ROLE_ADMIN", "ROLE_DUENO" })
+	@DeleteMapping("/administradores/{run}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void eliminarAdministrador(@PathVariable String run) {
+		administradorService.delete(run);
+	}
+
 }
