@@ -25,6 +25,9 @@ public class Fitosanitario implements Serializable {
 
 	@Column(length = 25, nullable = false, updatable = true)
 	private String objetivo;
+	
+	@Column(length = 25, nullable = false, updatable = true)
+	private String tipo;
 
 	@Column(name = "ingrediente_activo", length = 25, nullable = false, updatable = true)
 	private String ingredienteActivo;
@@ -34,6 +37,14 @@ public class Fitosanitario implements Serializable {
 
 	@Column(nullable = false, updatable = true)
 	private int carencia;
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
 
 	@Column(length = 1, nullable = false, updatable = true)
 	private boolean estado;

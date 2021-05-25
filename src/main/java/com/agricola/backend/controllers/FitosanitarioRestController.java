@@ -53,7 +53,8 @@ public class FitosanitarioRestController {
 		fitosanitarioActual.setIngredienteActivo(fitosanitario.getIngredienteActivo());
 		fitosanitarioActual.setMojamiento(fitosanitario.getMojamiento());
 		fitosanitarioActual.setCarencia(fitosanitario.getCarencia());
-
+		fitosanitarioActual.setTipo(fitosanitario.getTipo());
+		
 		return fitosanitarioService.save(fitosanitarioActual);
 
 	}
