@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,34 +18,38 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agricola.backend.models.entity.RegistroFertilizante;
 import com.agricola.backend.models.services.IRegistroFertilizanteService;
-@CrossOrigin(origins = {"http://localhost:4200"})
+
+@CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 @RequestMapping("/api")
 public class RegistroFertilizanteRestController {
 
-	 @Autowired
-	 private IRegistroFertilizanteService registroFertilizanteService;
-	
-	
-	 @GetMapping("/registrosFertilizantes")
-	 public List<RegistroFertilizante> listarRegistrosFertilizantes() {
-		
+	@Autowired
+	private IRegistroFertilizanteService registroFertilizanteService;
+
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA","ROLE_ADMINCAMPO" })
+	@GetMapping("/registrosFertilizantes")
+	public List<RegistroFertilizante> listarRegistrosFertilizantes() {
+
 		return registroFertilizanteService.findAll();
 	}
-	 
-	 @GetMapping("/registrosFertilizantes/{id}")
-	 public RegistroFertilizante buscarRegistro(@PathVariable Long id) {
-			return registroFertilizanteService.findById(id);
-     }
- 
-    @PostMapping("/registrosFertilizantes") 
+
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA" })
+	@GetMapping("/registrosFertilizantes/{id}")
+	public RegistroFertilizante buscarRegistro(@PathVariable Long id) {
+		return registroFertilizanteService.findById(id);
+	}
+
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA" })
+	@PostMapping("/registrosFertilizantes")
 	@ResponseStatus(HttpStatus.CREATED)
 	public RegistroFertilizante crearRegsitro(@RequestBody RegistroFertilizante registro) {
 		return registroFertilizanteService.save(registro);
 	}
 
-	@PutMapping("/registrosFertilizantes/{id}") 
-	@ResponseStatus(HttpStatus.CREATED) 
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA" })
+	@PutMapping("/registrosFertilizantes/{id}")
+	@ResponseStatus(HttpStatus.CREATED)
 	public RegistroFertilizante actualizarRegistro(@RequestBody RegistroFertilizante registro, @PathVariable Long id) {
 
 		RegistroFertilizante registroActual = registroFertilizanteService.findById(id);
@@ -56,8 +61,9 @@ public class RegistroFertilizanteRestController {
 		return registroFertilizanteService.save(registroActual);
 	}
 
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA" })
 	@DeleteMapping("/registrosFertilizantes/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT) 
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void eliminarRegistro(@PathVariable Long id) {
 		registroFertilizanteService.delete(id);
 	}

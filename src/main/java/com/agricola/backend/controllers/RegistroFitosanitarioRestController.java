@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,33 +19,38 @@ import org.springframework.web.bind.annotation.RestController;
 import com.agricola.backend.models.entity.RegistroFitosanitario;
 import com.agricola.backend.models.services.IRegistroFitosanitarioService;
 
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 @RequestMapping("/api")
 public class RegistroFitosanitarioRestController {
-	
+
 	@Autowired
 	private IRegistroFitosanitarioService registroFitosanitarioService;
 
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA","ROLE_ADMINCAMPO" })
 	@GetMapping("/registrosFitosanitarios") // okei
 	public List<RegistroFitosanitario> listaFitosanitarios() {
 		return registroFitosanitarioService.findAll();
 	}
-	
+
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA" })
 	@GetMapping("/registrosFitosanitarios/{id}") // okei
 	public RegistroFitosanitario buscarRegistroFitosanitarioById(@PathVariable Long id) {
 		return registroFitosanitarioService.findById(id);
 	}
 
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA" })
 	@PostMapping("/registrosFitosanitarios")
 	@ResponseStatus(HttpStatus.CREATED) // okei
 	public RegistroFitosanitario crearRegistroFitosanitario(@RequestBody RegistroFitosanitario registroFitosanitario) {
 		return registroFitosanitarioService.save(registroFitosanitario);
 	}
 
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA" })
 	@PutMapping("/registrosFitosanitarios/{id}")
-	@ResponseStatus(HttpStatus.CREATED)  // okei
-	public RegistroFitosanitario actualizarFitosanitario(@RequestBody RegistroFitosanitario registroFitosanitario, @PathVariable Long id) {
+	@ResponseStatus(HttpStatus.CREATED) // okei
+	public RegistroFitosanitario actualizarFitosanitario(@RequestBody RegistroFitosanitario registroFitosanitario,
+			@PathVariable Long id) {
 
 		RegistroFitosanitario registroFitosanitarioActual = registroFitosanitarioService.findById(id);
 
@@ -54,12 +60,12 @@ public class RegistroFitosanitarioRestController {
 		registroFitosanitarioActual.setFecha(registroFitosanitario.getFecha());
 		registroFitosanitarioActual.setHoraTermino(registroFitosanitario.getHoraTermino());
 		registroFitosanitarioActual.setCondicionesMetereologicas(registroFitosanitario.getCondicionesMetereologicas());
-		
 
 		return registroFitosanitarioService.save(registroFitosanitarioActual);
 
 	}
 
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA" })
 	@DeleteMapping("/registrosFitosanitarios/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT) // okei
 	public void eliminarRegistroFitosanitario(@PathVariable Long id) {
