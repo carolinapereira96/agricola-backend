@@ -1,6 +1,7 @@
 package com.agricola.backend.models.services;
-
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +14,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.agricola.backend.models.dao.IUsuarioDao;
+import com.agricola.backend.models.entity.Predio;
 import com.agricola.backend.models.entity.Usuario;
 
 
@@ -22,7 +23,7 @@ import com.agricola.backend.models.entity.Usuario;
 public class UsuarioService implements IUsuarioService,UserDetailsService {
 
 	private Logger logger = LoggerFactory.getLogger(UsuarioService.class);
-	
+	private Long id = null;
 	@Autowired
 	private IUsuarioDao usuarioDao;
 	
@@ -44,11 +45,44 @@ public class UsuarioService implements IUsuarioService,UserDetailsService {
 		return new User(username, usuario.getPassword(), usuario.getEnabled(), true, true, true, authorities);
 	}
 
+	
 	@Override
 	@Transactional(readOnly=true)
 	public Usuario findByUsername(String username) {
 		return usuarioDao.findByUsername(username);
 	}
+
+	@Override
+	public Usuario save(Usuario user) {
+		return usuarioDao.save(user);
+	}
 	
+	@Override
+	@Transactional
+	public void delete(Usuario usuario) {
+		usuarioDao.delete(usuario);;
+	}
+
+	@Override
+	public Long findByRun(String run) {
+		List<Usuario> usuarios = (List<Usuario>) usuarioDao.findAll();
+	
+		for (Iterator iterator = usuarios.iterator(); iterator.hasNext();) {
+			Usuario usuario = (Usuario) iterator.next();
+			if(usuario.getUsername().equalsIgnoreCase(run)) {
+				id=usuario.getId();
+			}
+		}
+		return id;
+	}
+
+
+	@Override
+	@Transactional(readOnly=true)
+	public Optional<Usuario> findById(Long id) {
+		return usuarioDao.findById(id);
+	}
+
+
 
 }
