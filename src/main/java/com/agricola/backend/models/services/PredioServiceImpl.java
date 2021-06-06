@@ -50,4 +50,9 @@ public class PredioServiceImpl implements IPredioService {
 		return predioDao.findById(id).orElse(null);
 	}
 
+	@Override
+	public Predio findPredioByNombre(String nombre) {
+		return predioDao.findPredioByNombre(nombre);
+	}
+
 }

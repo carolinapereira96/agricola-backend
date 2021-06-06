@@ -13,4 +13,6 @@ public interface IPredioService {
 	public void delete(Long id);
 
 	public Predio findById(Long id);
+	
+	public Predio findPredioByNombre(String nombre);
 }

@@ -13,5 +13,9 @@ public interface ICampoService {
 	public void delete(Long id);
 
 	public Campo findById(Long id);
+	
+	public Campo findCampoByNombre(String nombre);
+	
+	public Campo findCampoByDireccion(String direccion);
 
 }

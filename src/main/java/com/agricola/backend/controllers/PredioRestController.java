@@ -1,9 +1,13 @@
 package com.agricola.backend.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,44 +32,120 @@ public class PredioRestController {
 	private IPredioService predioService;
 
 	@Secured({ "ROLE_ADMIN", "ROLE_ADMINCAMPO", "ROLE_DUENO" })
-	@GetMapping("/predios") // okei
+	@GetMapping("/predios")
 	public List<Predio> listaPredios() {
 		return predioService.findAll();
 	}
 
 	@Secured({ "ROLE_ADMIN", "ROLE_ADMINCAMPO", "ROLE_DUENO" })
-	@GetMapping("/predios/{id}") // okei
-	public Predio buscarPredio(@PathVariable Long id) {
-		return predioService.findById(id);
+	@GetMapping("/predios/{id}") 
+	public ResponseEntity<?> buscarPredio(@PathVariable Long id) {
+		
+		Predio predio = null;
+		Map<String, Object> response = new HashMap<>();
+		
+		try {
+			predio = predioService.findById(id);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al realizar la consulta en la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if (predio == null) {
+			response.put("mensaje", "El Predio con ID : "+ id +" no existe en la base de datos");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Predio>(predio, HttpStatus.OK);
 	}
 
+	
 	@Secured({ "ROLE_ADMIN", "ROLE_ADMINCAMPO", "ROLE_DUENO" })
-	@PostMapping("/predios") // okei
-	@ResponseStatus(HttpStatus.CREATED)
-	public Predio crearFitosanitario(@RequestBody Predio predio) {
-		return predioService.save(predio);
+	@PostMapping("/predios") 
+	public ResponseEntity<?> crearPredio(@RequestBody Predio predio) {
+		
+		Map<String, Object> response = new HashMap<>();
+		
+		if (predioService.findPredioByNombre(predio.getNombre()) != null) {
+			response.put("mensaje", "Error, el nombre del predio ya existe");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+		}
+
+		Predio predio2 = null;
+		try {
+			predio2 = predioService.save(predio);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al guardar el predio");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("mensaje", "¡El predio ha sido creado con éxito!");
+		response.put("predio", predio2);
+		
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 
+	
 	@Secured({ "ROLE_ADMIN", "ROLE_ADMINCAMPO", "ROLE_DUENO" })
-	@PutMapping("/predios/{id}") // okei
-	@ResponseStatus(HttpStatus.CREATED)
-	public Predio actualizarPredio(@RequestBody Predio predio, @PathVariable Long id) {
-
+	@PutMapping("/predios/{id}") 
+	public ResponseEntity<?> actualizarPredio(@RequestBody Predio predio, @PathVariable Long id) {
+		
+		Map<String, Object> response = new HashMap<>();
+		
 		Predio predioActual = predioService.findById(id);
+		
+		Predio predioActualizado = null;
+		
+		if (!predioActual.getNombre().trim().equalsIgnoreCase(predio.getNombre().trim())) {
+
+			if (predioService.findPredioByNombre(predio.getNombre().trim()) != null) {
+				response.put("mensaje", "Error, el nombre del predio ya existe");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+			}
+		}
+		
 
 		predioActual.setNombre(predio.getNombre());
 		predioActual.setHectareas(predio.getHectareas());
+		predioActual.setIdCampo(predio.getIdCampo());
 
-		return predioService.save(predioActual);
+		try {
+			predioActualizado = predioService.save(predioActual);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al actualizar el predio en la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		response.put("mensaje", "¡El predio ha sido actualizado con éxito!");
+		response.put("predio", predioActualizado);
+
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 
 	}
 
 	@Secured({ "ROLE_ADMIN", "ROLE_ADMINCAMPO", "ROLE_DUENO" })
 	@DeleteMapping("/predios/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT) // okei
-	public void eliminarPredio(@PathVariable Long id) {
+	@ResponseStatus(HttpStatus.NO_CONTENT) 
+	public ResponseEntity<?> eliminarPredio(@PathVariable Long id) {
+		
+		Map<String, Object> response = new HashMap<>();
+		
+		if (predioService.findById(id) == null) {
+			response.put("mensaje", "Error, el predio a eliminar no existe en la base de datos");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
 
-		predioService.delete(id);
+		try {
+			predioService.delete(id);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al eliminar el predio en la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("mensaje", "¡El predio fue eliminado con éxito!");
+		
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 
 }

@@ -51,4 +51,16 @@ public class CampoServiceImpl implements ICampoService{
 		return campoDao.findById(id).orElse(null);
 	}
 
+	@Override
+	public Campo findCampoByNombre(String nombre) {
+		
+		return campoDao.findCampoByNombre(nombre);
+	}
+
+	@Override
+	public Campo findCampoByDireccion(String direccion) {
+
+		return campoDao.findCampoByDireccion(direccion);
+	}
+
 }

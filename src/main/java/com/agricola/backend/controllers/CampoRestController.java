@@ -1,9 +1,13 @@
 package com.agricola.backend.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agricola.backend.models.entity.Campo;
@@ -28,44 +31,131 @@ public class CampoRestController {
 	private ICampoService campoService;
 
 	@Secured({ "ROLE_ADMIN", "ROLE_ADMINCAMPO", "ROLE_DUENO" })
-	@GetMapping("/campos") // okei
+	@GetMapping("/campos") 
 	public List<Campo> listaCampos() {
 		return campoService.findAll();
 	}
 
 	@Secured({ "ROLE_ADMIN", "ROLE_ADMINCAMPO", "ROLE_DUENO" })
-	@GetMapping("/campos/{id}") // okei
-	public Campo buscarCampo(@PathVariable Long id) {
-		return campoService.findById(id);
+	@GetMapping("/campos/{id}") 
+	public ResponseEntity<?> buscarCampo(@PathVariable Long id) {
+		
+		Campo campo = null;
+		Map<String, Object> response = new HashMap<>();
+		
+		try {
+			campo = campoService.findById(id);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al realizar la consulta en la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if(campo == null) {
+			response.put("mensaje", "El Campo con ID : " +id+ " no existe en la base de datos");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+
+		
+		return new ResponseEntity<Campo>(campo, HttpStatus.OK);
 	}
 
 	@Secured({ "ROLE_ADMIN", "ROLE_ADMINCAMPO", "ROLE_DUENO" })
-	@PostMapping("/campos") // okei
-	@ResponseStatus(HttpStatus.CREATED)
-	public Campo crearCampo(@RequestBody Campo campo) {
-		return campoService.save(campo);
-	}
+	@PostMapping("/campos") 
+	public ResponseEntity<?> crearCampo(@RequestBody Campo campo) {
+		
+		Map<String, Object> response = new HashMap<>();
+		
+		if (campoService.findCampoByNombre(campo.getNombre()) != null) {
+			response.put("mensaje", "Error, el nombre del campo ya existe");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+		}
 
+		if (campoService.findCampoByDireccion(campo.getDireccion()) != null) {
+			response.put("mensaje", "Error, la dirección del campo ya existe");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+		}
+		
+		Campo campo2 = null;
+		try {
+			campo2 = campoService.save(campo);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al guardar el Campo");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("mensaje", "¡El campo ha sido creado con éxito!");
+		response.put("campo", campo2);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+	}
+	
+	
+	
 	@Secured({ "ROLE_ADMIN", "ROLE_ADMINCAMPO", "ROLE_DUENO" })
 	@PutMapping("/campos/{id}")
-	@ResponseStatus(HttpStatus.CREATED) // okei
-	public Campo actualizarCampo(@RequestBody Campo campo, @PathVariable Long id) {
-
+	public ResponseEntity<?> actualizarCampo(@RequestBody Campo campo, @PathVariable Long id) {
+		
+		Map<String, Object> response = new HashMap<>();
+		
 		Campo campoActual = campoService.findById(id);
+		
+		Campo campoActualizado = null;
+		
+		if (!campoActual.getNombre().trim().equalsIgnoreCase(campo.getNombre().trim())) {
+
+			if (campoService.findCampoByNombre(campo.getNombre().trim()) != null) {
+				response.put("mensaje", "Error, el nombre del campo ya existe");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+			}
+		}
+		
+		if (!campoActual.getDireccion().trim().equalsIgnoreCase(campo.getDireccion().trim())) {
+
+			if (campoService.findCampoByDireccion(campo.getDireccion().trim()) != null) {
+				response.put("mensaje", "Error, la dirección del campo ya existe");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+			}
+		}
 
 		campoActual.setNombre(campo.getNombre());
 		campoActual.setDireccion(campo.getDireccion());
 		campoActual.setHectareas(campo.getHectareas());
-
-		return campoService.save(campoActual);
+		campoActual.setRunAdministradorCampo(campo.getRunAdministradorCampo());
+		campoActual.setRunAdministradorCampo(campo.getRunAdministradorCampo());
+		
+		try {
+			campoActualizado = campoService.save(campoActual);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al actualizar el campo en la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		response.put("mensaje", "¡El campo ha sido actualizado con éxito!");
+		response.put("encargado", campoActualizado);
+		
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 
 	}
 
 	@Secured({ "ROLE_ADMIN", "ROLE_ADMINCAMPO", "ROLE_DUENO" })
 	@DeleteMapping("/campos/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT) // okei
-	public void eliminarCampo(@PathVariable Long id) {
-
-		campoService.delete(id);
+	public ResponseEntity<?> eliminarCampo(@PathVariable Long id) {
+		Map<String, Object> response = new HashMap<>();
+		
+		if (campoService.findById(id) == null) {
+			response.put("mensaje", "Error, el campo a eliminar no existe en la base de datos");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		
+		try {
+			campoService.delete(id);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al eliminar el campo en la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("mensaje", "¡El campo fue eliminado con éxito!");
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 }
