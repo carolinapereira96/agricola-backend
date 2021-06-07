@@ -27,13 +27,13 @@ public class RegistroFitosanitarioRestController {
 	@Autowired
 	private IRegistroFitosanitarioService registroFitosanitarioService;
 
-	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA","ROLE_ADMINCAMPO" })
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA","ROLE_ADMINCAMPO", "ROLE_DUENO" })
 	@GetMapping("/registrosFitosanitarios") // okei
 	public List<RegistroFitosanitario> listaFitosanitarios() {
 		return registroFitosanitarioService.findAll();
 	}
 
-	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA" })
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA","ROLE_ADMINCAMPO", "ROLE_DUENO" })
 	@GetMapping("/registrosFitosanitarios/{id}") // okei
 	public RegistroFitosanitario buscarRegistroFitosanitarioById(@PathVariable Long id) {
 		return registroFitosanitarioService.findById(id);

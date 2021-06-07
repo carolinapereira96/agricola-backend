@@ -27,13 +27,13 @@ public class FitosanitarioRestController {
 	@Autowired
 	private IFitosanitarioService fitosanitarioService;
 
-	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA", "ROLE_DUENO" })
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA", "ROLE_DUENO","ROLE_ADMINCAMPO" })
 	@GetMapping("/fitosanitarios") // okei
 	public List<Fitosanitario> listaFitosanitarios() {
 		return fitosanitarioService.findAll();
 	}
 
-	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA", "ROLE_DUENO" })
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA", "ROLE_DUENO" ,"ROLE_ADMINCAMPO"})
 	@GetMapping("/fitosanitarios/{id}") // okei
 	public Fitosanitario buscarFitosanitarioById(@PathVariable Long id) {
 		return fitosanitarioService.findById(id);

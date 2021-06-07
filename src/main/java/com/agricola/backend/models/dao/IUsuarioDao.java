@@ -12,4 +12,7 @@ public interface IUsuarioDao extends CrudRepository<Usuario,Long>{
 	@Query("select u from Usuario u where u.username=?1")
 	public Usuario findByUsername2(String username);
 
+	@Query("select u from Usuario u where u.username=?1")
+	public Usuario buscaRun(String run);
+
 }

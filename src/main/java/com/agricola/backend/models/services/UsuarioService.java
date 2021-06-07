@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.agricola.backend.models.dao.IUsuarioDao;
-import com.agricola.backend.models.entity.Predio;
 import com.agricola.backend.models.entity.Usuario;
 
 
@@ -81,6 +80,12 @@ public class UsuarioService implements IUsuarioService,UserDetailsService {
 	@Transactional(readOnly=true)
 	public Optional<Usuario> findById(Long id) {
 		return usuarioDao.findById(id);
+	}
+
+
+	@Override
+	public Usuario buscaRun(String run) {
+		return usuarioDao.buscaRun(run);
 	}
 
 

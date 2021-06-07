@@ -15,5 +15,15 @@ public interface IAdministradorService {
 
 	public Administrador findById(String run);
 
+	Administrador findAdministradorByEmail(String email);
+
+	Administrador findAdministradorByPass(String pass);
+
+	Administrador findAdministradorByTelefono(String telefono);
+
+	Administrador findAdministradorByRun(String run);
+
+	public Object findAdministradorByNombre(String run);
+
 	
 }

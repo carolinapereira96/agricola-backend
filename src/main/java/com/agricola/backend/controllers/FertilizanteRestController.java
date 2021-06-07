@@ -26,13 +26,13 @@ public class FertilizanteRestController {
 	@Autowired
 	private IFertilizanteService fertilizanteService;
 
-	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA", "ROLE_DUENO" })
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA", "ROLE_DUENO","ROLE_ADMINCAMPO" })
 	@GetMapping("/fertilizantes")
 	public List<Fertilizante> listarFertilizantes() {
 		return fertilizanteService.findAll();
 	}
 
-	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA", "ROLE_DUENO" })
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA", "ROLE_DUENO","ROLE_ADMINCAMPO"})
 	@GetMapping("/fertilizantes/{id}")
 	public Fertilizante buscarFertilizante(@PathVariable Long id) {
 		return fertilizanteService.findById(id);

@@ -27,14 +27,14 @@ public class RegistroFertilizanteRestController {
 	@Autowired
 	private IRegistroFertilizanteService registroFertilizanteService;
 
-	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA","ROLE_ADMINCAMPO" })
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA", "ROLE_DUENO","ROLE_ADMINCAMPO" })
 	@GetMapping("/registrosFertilizantes")
 	public List<RegistroFertilizante> listarRegistrosFertilizantes() {
 
 		return registroFertilizanteService.findAll();
 	}
 
-	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA" })
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA" ,"ROLE_ADMINCAMPO", "ROLE_DUENO"})
 	@GetMapping("/registrosFertilizantes/{id}")
 	public RegistroFertilizante buscarRegistro(@PathVariable Long id) {
 		return registroFertilizanteService.findById(id);
