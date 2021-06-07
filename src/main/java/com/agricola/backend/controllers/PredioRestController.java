@@ -66,8 +66,8 @@ public class PredioRestController {
 		
 		Map<String, Object> response = new HashMap<>();
 		
-		if (predioService.findPredioByNombre(predio.getNombre()) != null) {
-			response.put("mensaje", "Error, el nombre del predio ya existe");
+		if (predioService.findPredioByNombre(predio.getNombre().trim()) != null) {
+			response.put("mensaje", "El nombre del predio ya existe");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
 		}
 
@@ -99,11 +99,10 @@ public class PredioRestController {
 		if (!predioActual.getNombre().trim().equalsIgnoreCase(predio.getNombre().trim())) {
 
 			if (predioService.findPredioByNombre(predio.getNombre().trim()) != null) {
-				response.put("mensaje", "Error, el nombre del predio ya existe");
+				response.put("mensaje", "El nombre del predio ya existe");
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
 			}
-		}
-		
+		}		
 
 		predioActual.setNombre(predio.getNombre());
 		predioActual.setHectareas(predio.getHectareas());

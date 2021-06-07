@@ -7,7 +7,6 @@ import com.agricola.backend.models.entity.Usuario;
 public interface IUsuarioService {
 
 	
-	 
 	public Usuario save(Usuario user);
 
 	void delete(Usuario usuario);
@@ -17,5 +16,9 @@ public interface IUsuarioService {
 	public Optional<Usuario> findById(Long id);
 
 	public Usuario findByUsername(String username);
+
+
+
+	
 
 }

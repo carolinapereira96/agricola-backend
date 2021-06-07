@@ -65,15 +65,20 @@ public class CampoRestController {
 	public ResponseEntity<?> crearCampo(@RequestBody Campo campo) {
 		
 		Map<String, Object> response = new HashMap<>();
+		List<Campo> campos = campoService.findAll();
 		
-		if (campoService.findCampoByNombre(campo.getNombre()) != null) {
-			response.put("mensaje", "Error, el nombre del campo ya existe");
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+		for(int i=0; i<campos.size(); i++) {
+			if (campos.get(i).getNombre().trim().equalsIgnoreCase(campo.getNombre().trim()) && campos.get(i).isEstado() == true) {
+				response.put("mensaje", "El nombre del campo ya existe");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+			}
 		}
-
-		if (campoService.findCampoByDireccion(campo.getDireccion()) != null) {
-			response.put("mensaje", "Error, la dirección del campo ya existe");
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+		
+		for(int i=0; i<campos.size(); i++) {
+			if (campos.get(i).getDireccion().trim().equalsIgnoreCase(campo.getDireccion().trim()) && campos.get(i).isEstado() == true) {
+				response.put("mensaje", "La dirección del campo ya existe");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+			}
 		}
 		
 		Campo campo2 = null;
@@ -97,14 +102,12 @@ public class CampoRestController {
 		
 		Map<String, Object> response = new HashMap<>();
 		
-		Campo campoActual = campoService.findById(id);
-		
+		Campo campoActual = campoService.findById(id);		
 		Campo campoActualizado = null;
 		
 		if (!campoActual.getNombre().trim().equalsIgnoreCase(campo.getNombre().trim())) {
-
 			if (campoService.findCampoByNombre(campo.getNombre().trim()) != null) {
-				response.put("mensaje", "Error, el nombre del campo ya existe");
+				response.put("mensaje", "El nombre del campo ya existe");
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
 			}
 		}
@@ -112,7 +115,7 @@ public class CampoRestController {
 		if (!campoActual.getDireccion().trim().equalsIgnoreCase(campo.getDireccion().trim())) {
 
 			if (campoService.findCampoByDireccion(campo.getDireccion().trim()) != null) {
-				response.put("mensaje", "Error, la dirección del campo ya existe");
+				response.put("mensaje", "La dirección del campo ya existe");
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
 			}
 		}

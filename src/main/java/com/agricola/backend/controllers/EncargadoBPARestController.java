@@ -3,12 +3,14 @@ package com.agricola.backend.controllers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +22,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agricola.backend.models.entity.EncargadoBPA;
+import com.agricola.backend.models.entity.Role;
+import com.agricola.backend.models.entity.Usuario;
 import com.agricola.backend.models.services.IEncargadoBPAService;
+import com.agricola.backend.models.services.IRoleService;
+import com.agricola.backend.models.services.IUsuarioService;
 
 @CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 @RequestMapping("/api")
 public class EncargadoBPARestController {
+	
+	@Autowired
+	private IRoleService roleService;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private IUsuarioService userService;
 	
 	@Autowired
 	private IEncargadoBPAService encargadoBPAService;
@@ -61,20 +76,20 @@ public class EncargadoBPARestController {
 	@Secured({ "ROLE_ADMIN", "ROLE_DUENO" })
 	@PostMapping("/encargadosBPA")
 	public ResponseEntity<?> crearEncargadoBPA(@RequestBody EncargadoBPA encargadoBPA) {
-
+		
 		Map<String, Object> response = new HashMap<>();
 
-		if (encargadoBPAService.findEncargadoByRun(encargadoBPA.getRun()) != null) {
+		if (encargadoBPAService.findEncargadoByRun(encargadoBPA.getRun().trim()) != null && encargadoBPAService.findEncargadoByRun(encargadoBPA.getRun().trim()).isEstado() == true) {
 			response.put("mensaje", "Error, el rut ya existe");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
 		}
 
-		if (encargadoBPAService.findEncargadoByTelefono(encargadoBPA.getTelefono()) != null) {
+		if (encargadoBPAService.findEncargadoByTelefono(encargadoBPA.getTelefono().trim()) != null) {
 			response.put("mensaje", "Error, el telefono ya existe");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
 		}
 
-		if (encargadoBPAService.findEncargadoByEmail(encargadoBPA.getEmail()) != null) {
+		if (encargadoBPAService.findEncargadoByEmail(encargadoBPA.getEmail().trim()) != null) {
 			response.put("mensaje", "Error, el email ya existe");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
 		}
@@ -87,6 +102,18 @@ public class EncargadoBPARestController {
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		
+		List<Role> list1 = (List<Role>) roleService.findAll();
+	    List<Role> listaFiltrada = list1.stream().filter(item->item.getNombre().equalsIgnoreCase("ROLE_ENCARGADOBPA")).collect(Collectors.toList());
+        Usuario user = new Usuario();
+        user.setUsername(encargadoBPA.getRun());
+        user.setNombre(encargadoBPA.getNombre());
+        user.setEnabled(true);
+        user.setEmail(encargadoBPA.getEmail());
+        user.setPassword(passwordEncoder.encode(encargadoBPA.getPass()));
+        user.setRoles(listaFiltrada);
+        userService.save(user);
+		
 		response.put("mensaje", "El encargado ha sido creado con éxito!!");
 		response.put("encargado", encargado);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
@@ -111,10 +138,6 @@ public class EncargadoBPARestController {
 		}
 
 		if (!encargadoBPAActual.getEmail().trim().equalsIgnoreCase(encargadoBPA.getEmail().trim())) {
-
-			System.out.println("entre al primer if");
-			System.out.println(encargadoBPAService.findEncargadoByEmail("natalia_urra@gmail.com"));
-
 			if (encargadoBPAService.findEncargadoByEmail(encargadoBPA.getEmail().trim()) != null) {
 				System.out.println("entre al segundo if");
 				response.put("mensaje", "Error, el email ya existe");
@@ -134,6 +157,11 @@ public class EncargadoBPARestController {
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		
+		Usuario user = userService.findByUsername(encargadoBPA.getRun());
+		user.setEmail(encargadoBPA.getEmail());
+		user.setNombre(encargadoBPA.getNombre());
+		user.setPassword(passwordEncoder.encode(encargadoBPA.getPass()));
 
 		response.put("mensaje", "El encargado ha sido actualizado con éxito!!");
 		response.put("encargado", encargadoActualizado);
@@ -159,6 +187,7 @@ public class EncargadoBPARestController {
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		userService.findByUsername(run).setEnabled(false);
 		response.put("mensaje", "El encargado fue eliminado con éxito");
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
