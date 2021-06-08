@@ -17,7 +17,9 @@ public interface IUsuarioService {
 
 	public Usuario findByUsername(String username);
 
-	public Usuario buscaRun(String run);
+	public Usuario findByEmail(String email);
+
+
 
 	
 

@@ -43,6 +43,11 @@ public class FertilizanteServiceImpl implements IFertilizanteService{
 		return fertilizanteDao.findById(id).orElse(null);
 	}
 
+	@Override
+	public Fertilizante findCuartelByNombre(String nombre) {
+		return fertilizanteDao.findCuartelByNombre(nombre);
+	}
+
 
 
 	 

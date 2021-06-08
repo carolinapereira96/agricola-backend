@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.agricola.backend.models.entity.Administrador;
 import com.agricola.backend.models.entity.Role;
@@ -76,11 +75,17 @@ public class AdministradorRestController {
 	public ResponseEntity<?> crearAdministrador(@RequestBody Administrador adm) {
 
 		Map<String, Object> response = new HashMap<>();
-		if (administradorService.findAdministradorByNombre(adm.getNombre()) != null) {
+
+		
+		if (userService.findByEmail(adm.getEmail()) != null ) {
+			response.put("mensaje", "Error, el email ya existe");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+		}
+		if (administradorService.findAdministradorByNombre(adm.getNombre().trim()) != null) {
 			response.put("mensaje", "Error, el nombre ya existe");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
 		}
-		if (administradorService.findAdministradorByRun(adm.getRun()) != null) {
+		if (administradorService.findAdministradorByRun(adm.getRun()) != null && administradorService.findAdministradorByRun(adm.getRun()).isEstado()) {
 			response.put("mensaje", "Error, el rut ya existe");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
 		}
@@ -116,73 +121,90 @@ public class AdministradorRestController {
 		user.setRoles(listaFiltrada);
 		userService.save(user);
 
-		response.put("", "El administrador ha sido creado con éxito!");
+		response.put("mensaje", "El administrador ha sido creado con éxito!");
 		response.put("Administrador ", administradorNew);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
-	
+
 	@Secured({ "ROLE_ADMIN", "ROLE_DUENO" })
 	@PutMapping("/administradores/{run}")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Administrador actualizarAdministrador(@RequestBody Administrador adm, @PathVariable String run) {
-		Administrador administradorActual = administradorService.findById(run);
-		administradorActual.setNombre(adm.getNombre());
-		administradorActual.setTelefono(adm.getTelefono());
-		administradorActual.setEmail(adm.getEmail());
-		administradorActual.setPassword(adm.getPassword());
-		Usuario user = userService.buscaRun(adm.getRun());
-		System.out.println("que me lanzaaaaa :      " + user.getNombre());
-		user.setEmail(adm.getEmail());
-		user.setNombre(adm.getNombre());
-		user.setPassword(passwordEncoder.encode(adm.getPassword()));
-		return administradorService.save(administradorActual);
-	}
+	public ResponseEntity<?> actualizarAdministrador(@RequestBody Administrador adm, @PathVariable String run) {
 
-//	@Secured({ "ROLE_ADMIN", "ROLE_DUENO" })
-//	@PutMapping("/administradores/{run}")
-//	public ResponseEntity<?> actualizarAdministrador(@RequestBody Administrador adm, @PathVariable String run) {
-//		Administrador administradorActual = administradorService.findById(run);
-//		Administrador administradorUpdated = null;
-//		Usuario user = userService.findByUsername(adm.getRun());
-//		Map<String, Object> response = new HashMap<>();
-//
-//		if (administradorActual == null) {
-//			response.put("mensaje", "Error: no se pudo editar, el administrador:  ".concat(run)
-//					.concat("  no existe en la base de datos!"));
-//			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-//		}
-//		try {
-//			administradorActual.setNombre(adm.getNombre());
-//			administradorActual.setTelefono(adm.getTelefono());
-//			administradorActual.setEmail(adm.getEmail());
-//			administradorActual.setPassword(adm.getPassword());
-//			
-//			user.setEmail(adm.getEmail());
-//			user.setNombre(adm.getNombre());
-//			user.setPassword(passwordEncoder.encode(adm.getPassword()));
-//			administradorUpdated = administradorService.save(administradorActual);
-//
-//		} catch (DataAccessException e) {
-//			response.put("mensaje", "Error al actualizar el administrador en la base de datos");
-//			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
-//			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
-//
-//		
-//		response.put("", "El administrador ha sido actualizado con éxito!");
-//		response.put("Administrador ", administradorUpdated);
-//		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
-//	}
+		Administrador administradorActual = administradorService.findById(run);
+		Administrador administradorUpdated = null;
+		Usuario user = userService.findByUsername(adm.getRun());
+		Map<String, Object> response = new HashMap<>();
+
+		if (administradorActual == null) {
+			response.put("mensaje", "Error: no se pudo editar, el administrador:  ".concat(run)
+					.concat("  no existe en la base de datos!"));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+
+		if (!administradorActual.getEmail().trim().equalsIgnoreCase(adm.getEmail().trim())) {
+			if (userService.findByEmail(adm.getEmail()) != null) {
+				response.put("mensaje", "Error, el email ya existe");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+			}
+		}
+
+		if (!administradorActual.getNombre().trim().equalsIgnoreCase(adm.getNombre().trim())) {
+
+			if (administradorService.findAdministradorByNombre(adm.getNombre().trim()) != null) {
+				response.put("mensaje", "Error, el nombre ya existe");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+			}
+		}
+
+		if (!administradorActual.getTelefono().trim().equalsIgnoreCase(adm.getTelefono().trim())) {
+
+			if (administradorService.findAdministradorByTelefono(adm.getTelefono()) != null) {
+				response.put("mensaje", "Error, el telefono ya existe");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+			}
+		}
+		try {
+			administradorActual.setNombre(adm.getNombre());
+			administradorActual.setTelefono(adm.getTelefono());
+			administradorActual.setEmail(adm.getEmail());
+			administradorActual.setPassword(adm.getPassword());
+
+			user.setEmail(adm.getEmail());
+			user.setNombre(adm.getNombre());
+			user.setPassword(passwordEncoder.encode(adm.getPassword()));
+			administradorUpdated = administradorService.save(administradorActual);
+
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al actualizar el administrador en la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("", "El administrador ha sido actualizado con éxito!");
+		response.put("Administrador ", administradorUpdated);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+	}
 
 	@Secured({ "ROLE_ADMIN", "ROLE_DUENO" })
 	@DeleteMapping("/administradores/{run}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void eliminarAdministrador(@PathVariable String run) {
-		userService.findByUsername(run).setEnabled(false); // desactiva los permisos para inicar sesión
+	public ResponseEntity<?> eliminarAdministrador(@PathVariable String run) {
+		Map<String, Object> response = new HashMap<>();
+		// desactiva los permisos para inicar sesión
 		// userService.delete(userService.findByUsername(run)); // elimina por completo
 		// de la autenticación al usuario excepto en la tabla de la entidad en este caso
 		// administrador, solo la setea
-		administradorService.delete(run); // eliminado de forma lógica
+		// eliminado de forma lógica
+
+		try {
+			administradorService.delete(run);
+			userService.findByUsername(run).setEnabled(false);
+
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al eliminar el administrador en la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("mensaje", "El administrador ha sido eliminado con éxito");
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 
 }

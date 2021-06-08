@@ -84,9 +84,11 @@ public class UsuarioService implements IUsuarioService,UserDetailsService {
 
 
 	@Override
-	public Usuario buscaRun(String run) {
-		return usuarioDao.buscaRun(run);
+	public Usuario findByEmail(String email) {
+		return usuarioDao.findByEmail(email);
 	}
+
+
 
 
 

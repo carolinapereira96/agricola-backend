@@ -44,4 +44,10 @@ public class CuartelServiceImpl implements ICuartelService {
 		return cuartelDao.findById(id).orElse(null);
 	}
 
+	@Override
+	public Cuartel findCuartelByNombre(String nombre) {
+		// TODO Auto-generated method stub
+		return cuartelDao.findCuartelByNombre(nombre);
+	}
+
 }
