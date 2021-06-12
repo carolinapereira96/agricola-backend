@@ -16,6 +16,8 @@ public interface IUsuarioService {
 	public Optional<Usuario> findById(Long id);
 
 	public Usuario findByUsername(String username);
+	
+	public Usuario findByEmail(String email);
 
 
 

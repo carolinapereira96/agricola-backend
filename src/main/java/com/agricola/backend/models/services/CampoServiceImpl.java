@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.agricola.backend.models.dao.IAdministradorDao;
 import com.agricola.backend.models.dao.ICampoDao;
+import com.agricola.backend.models.entity.Administrador;
 import com.agricola.backend.models.entity.Campo;
 
 @Service
@@ -15,6 +17,9 @@ public class CampoServiceImpl implements ICampoService{
 	
 	@Autowired
 	private ICampoDao campoDao;
+	
+	@Autowired
+	private IAdministradorDao adminDao;
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -25,6 +30,8 @@ public class CampoServiceImpl implements ICampoService{
 		
 		for(int i=0; i < listCampos.size(); i++) {
 			if(listCampos.get(i).isEstado()) {
+				Administrador admin = adminDao.findById(listCampos.get(i).getRunAdministradorCampo()).orElse(null);
+				listCampos.get(i).setNombreAdministrador(admin.getNombre());
 				listCamposFiltrada.add(listCampos.get(i));
 			}
 		}		

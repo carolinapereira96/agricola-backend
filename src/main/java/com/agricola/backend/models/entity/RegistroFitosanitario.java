@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "registros_fitosanitarios")
@@ -22,13 +25,13 @@ public class RegistroFitosanitario implements Serializable {
 	private Long idRegistroFitosanitario;
 
 	// length para definir tamaño, updatable para si es actualizable y nullable para ver si acepta null
-	@Column(name = "tipo_maquinaria", length = 25, nullable = false, updatable = true)
+	@Column(name = "tipo_maquinaria", length = 30, nullable = false, updatable = true)
 	private String tipoMaquinaria;
 
-	@Column(name = "estado_fenologico", length = 40, nullable = false, updatable = true)
+	@Column(name = "estado_fenologico", length = 30, nullable = false, updatable = true)
 	private String estadoFenologico;
 
-	@Column(name = "dosis", nullable = false, updatable = true)
+	@Column(name = "dosis", nullable = false, updatable = true, length = 6)
 	private Double dosis;
 
 	@Temporal(TemporalType.DATE)
@@ -38,20 +41,63 @@ public class RegistroFitosanitario implements Serializable {
 	@Column(name = "hora_termino", length = 5, nullable = false, updatable = true)
 	private String horaTermino;
 
-	@Column(name = "condiciones_metereologicas", length = 25, nullable = false, updatable = true)
+	@Column(name = "condiciones_metereologicas", length = 30, nullable = false, updatable = true)
 	private String condicionesMetereologicas;
 
 	@Column(name = "run_encargado_bpa", nullable = false, updatable = true)
 	private String runEncargadoBPA;
+	
+	@JsonInclude()
+	@Transient
+	private String nombreEncargadoBPA;
 
 	@Column(name = "id_fitosanitario", nullable = false, updatable = true)
 	private Long idFitosanitario;
 	
-	@Column(name = "id_cuartel", nullable = false, updatable = false)
+	@JsonInclude()
+	@Transient
+	private String nombreFitosanitario;
+	
+	@Column(name = "id_cuartel", nullable = false, updatable = true)
 	private Long idCuartel;
 	
+	@JsonInclude()
+	@Transient
+	private String nombreCuartel;
 	
 	
+
+	public String getRunEncargadoBPA() {
+		return runEncargadoBPA;
+	}
+
+	public void setRunEncargadoBPA(String runEncargadoBPA) {
+		this.runEncargadoBPA = runEncargadoBPA;
+	}
+
+	public String getNombreEncargadoBPA() {
+		return nombreEncargadoBPA;
+	}
+
+	public void setNombreEncargadoBPA(String nombreEncargadoBPA) {
+		this.nombreEncargadoBPA = nombreEncargadoBPA;
+	}
+
+	public String getNombreFitosanitario() {
+		return nombreFitosanitario;
+	}
+
+	public void setNombreFitosanitario(String nombreFitosanitario) {
+		this.nombreFitosanitario = nombreFitosanitario;
+	}
+
+	public String getNombreCuartel() {
+		return nombreCuartel;
+	}
+
+	public void setNombreCuartel(String nombreCuartel) {
+		this.nombreCuartel = nombreCuartel;
+	}
 
 	public Long getIdCuartel() {
 		return idCuartel;

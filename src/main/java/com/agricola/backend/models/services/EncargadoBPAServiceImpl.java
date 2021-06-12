@@ -70,4 +70,9 @@ public class EncargadoBPAServiceImpl implements IEncargadoBPAService {
 		return encargadoBPADao.findEncargadoByPass(pass);
 	}
 
+	@Override
+	public EncargadoBPA findEncargadoByNombre(String nombre) {
+		return encargadoBPADao.findEncargadoByNombre(nombre);
+	}
+
 }

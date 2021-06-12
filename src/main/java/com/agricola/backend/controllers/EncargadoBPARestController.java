@@ -78,6 +78,11 @@ public class EncargadoBPARestController {
 	public ResponseEntity<?> crearEncargadoBPA(@RequestBody EncargadoBPA encargadoBPA) {
 		
 		Map<String, Object> response = new HashMap<>();
+		
+		if (encargadoBPAService.findEncargadoByNombre(encargadoBPA.getNombre().trim()) != null) {
+			response.put("mensaje", "Error, el nombre ya existe");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+		}
 
 		if (encargadoBPAService.findEncargadoByRun(encargadoBPA.getRun().trim()) != null && encargadoBPAService.findEncargadoByRun(encargadoBPA.getRun().trim()).isEstado() == true) {
 			response.put("mensaje", "Error, el rut ya existe");
@@ -86,6 +91,11 @@ public class EncargadoBPARestController {
 
 		if (encargadoBPAService.findEncargadoByTelefono(encargadoBPA.getTelefono().trim()) != null) {
 			response.put("mensaje", "Error, el telefono ya existe");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+		}
+		
+		if (userService.findByEmail(encargadoBPA.getEmail()) != null ) {
+			response.put("mensaje", "Error, el email ya existe");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
 		}
 
@@ -126,8 +136,16 @@ public class EncargadoBPARestController {
 		Map<String, Object> response = new HashMap<>();
 
 		EncargadoBPA encargadoBPAActual = encargadoBPAService.findById(run);
-
 		EncargadoBPA encargadoActualizado = null;
+		Usuario user = userService.findByUsername(encargadoBPA.getRun());
+		
+		if (!encargadoBPAActual.getNombre().trim().equalsIgnoreCase(encargadoBPA.getNombre().trim())) {
+
+			if (encargadoBPAService.findEncargadoByNombre(encargadoBPA.getNombre().trim()) != null) {
+				response.put("mensaje", "Error, el nombre ya existe");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+			}
+		}
 
 		if (!encargadoBPAActual.getTelefono().trim().equalsIgnoreCase(encargadoBPA.getTelefono().trim())) {
 
@@ -139,30 +157,34 @@ public class EncargadoBPARestController {
 
 		if (!encargadoBPAActual.getEmail().trim().equalsIgnoreCase(encargadoBPA.getEmail().trim())) {
 			if (encargadoBPAService.findEncargadoByEmail(encargadoBPA.getEmail().trim()) != null) {
-				System.out.println("entre al segundo if");
+				response.put("mensaje", "Error, el email ya existe");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+			}
+		}
+		
+		if (!encargadoBPAActual.getEmail().trim().equalsIgnoreCase(encargadoBPA.getEmail().trim())) {
+			if (userService.findByEmail(encargadoBPA.getEmail()) != null) {
 				response.put("mensaje", "Error, el email ya existe");
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
 			}
 		}
 
-		encargadoBPAActual.setNombre(encargadoBPA.getNombre());
-		encargadoBPAActual.setTelefono(encargadoBPA.getTelefono());
-		encargadoBPAActual.setEmail(encargadoBPA.getEmail());
-		encargadoBPAActual.setPass(encargadoBPA.getPass());
-
 		try {
+			encargadoBPAActual.setNombre(encargadoBPA.getNombre());
+			encargadoBPAActual.setTelefono(encargadoBPA.getTelefono());
+			encargadoBPAActual.setEmail(encargadoBPA.getEmail());
+			encargadoBPAActual.setPass(encargadoBPA.getPass());
+			
+			user.setEmail(encargadoBPA.getEmail());
+			user.setNombre(encargadoBPA.getNombre());
+			user.setPassword(passwordEncoder.encode(encargadoBPA.getPass()));
+			
 			encargadoActualizado = encargadoBPAService.save(encargadoBPAActual);
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al actualizar al Encargado BPA en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
-		Usuario user = userService.findByUsername(encargadoBPA.getRun());
-		user.setEmail(encargadoBPA.getEmail());
-		user.setNombre(encargadoBPA.getNombre());
-		user.setPassword(passwordEncoder.encode(encargadoBPA.getPass()));
-
 		response.put("mensaje", "El encargado ha sido actualizado con éxito!!");
 		response.put("encargado", encargadoActualizado);
 
@@ -181,13 +203,14 @@ public class EncargadoBPARestController {
 		}
 
 		try {
+			userService.findByUsername(run).setEnabled(false);
 			encargadoBPAService.delete(run);
+			
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al eliminar al Encargado BPA en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		userService.findByUsername(run).setEnabled(false);
 		response.put("mensaje", "El encargado fue eliminado con éxito");
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}

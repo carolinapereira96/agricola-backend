@@ -101,22 +101,26 @@ public class CampoRestController {
 	public ResponseEntity<?> actualizarCampo(@RequestBody Campo campo, @PathVariable Long id) {
 		
 		Map<String, Object> response = new HashMap<>();
-		
+		List<Campo> campos = campoService.findAll();
 		Campo campoActual = campoService.findById(id);		
 		Campo campoActualizado = null;
 		
 		if (!campoActual.getNombre().trim().equalsIgnoreCase(campo.getNombre().trim())) {
-			if (campoService.findCampoByNombre(campo.getNombre().trim()) != null) {
-				response.put("mensaje", "El nombre del campo ya existe");
-				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+			for(int i=0; i<campos.size(); i++) {
+				if (campos.get(i).getNombre().trim().equalsIgnoreCase(campo.getNombre().trim()) && campos.get(i).isEstado() == true) {
+					response.put("mensaje", "El nombre del campo ya existe");
+					return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+				}
 			}
 		}
 		
 		if (!campoActual.getDireccion().trim().equalsIgnoreCase(campo.getDireccion().trim())) {
 
-			if (campoService.findCampoByDireccion(campo.getDireccion().trim()) != null) {
-				response.put("mensaje", "La dirección del campo ya existe");
-				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+			for(int i=0; i<campos.size(); i++) {
+				if (campos.get(i).getDireccion().trim().equalsIgnoreCase(campo.getDireccion().trim()) && campos.get(i).isEstado() == true) {
+					response.put("mensaje", "La dirección del campo ya existe");
+					return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+				}
 			}
 		}
 

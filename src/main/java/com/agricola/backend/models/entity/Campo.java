@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "campos")
@@ -18,13 +21,13 @@ public class Campo implements Serializable {
 	@Column(name = "id_campo")
 	private Long idCampo;
 
-	@Column(length = 35, nullable = false, updatable = true)
+	@Column(length = 30, nullable = false, updatable = true)
 	private String nombre;
 
 	@Column(length = 80, nullable = false, updatable = true)
 	private String direccion;
 
-	@Column(nullable = false, updatable = true)
+	@Column(nullable = false, updatable = true, length = 2)
 	private int hectareas;
 
 	@Column(name = "run_dueno_campo", nullable = false, updatable = true)
@@ -32,12 +35,24 @@ public class Campo implements Serializable {
 
 	@Column(name = "run_administrador_campo", nullable = false, updatable = true)
 	private String runAdministradorCampo;
+	
+	@JsonInclude()
+	@Transient
+	private String nombreAdministrador;
 
 	@Column(length = 1, nullable = false, updatable = true)
 	private boolean estado;
 
 	public Long getIdCampo() {
 		return idCampo;
+	}
+
+	public String getNombreAdministrador() {
+		return nombreAdministrador;
+	}
+
+	public void setNombreAdministrador(String nombreAdministrador) {
+		this.nombreAdministrador = nombreAdministrador;
 	}
 
 	public void setIdCampo(Long idCampo) {

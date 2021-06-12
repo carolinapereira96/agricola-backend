@@ -14,6 +14,8 @@ public interface IEncargadoBPAService {
 	
 	public EncargadoBPA findById(String id);
 	
+	public EncargadoBPA findEncargadoByNombre(String nombre);
+	
 	public EncargadoBPA findEncargadoByRun(String run);
 	
 	public EncargadoBPA findEncargadoByTelefono(String telefono);

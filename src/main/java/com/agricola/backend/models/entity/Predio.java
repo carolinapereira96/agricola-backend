@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "predios")
@@ -21,14 +24,26 @@ public class Predio implements Serializable {
 	@Column(length = 30, nullable = false, updatable = true)
 	private String nombre;
 
-	@Column(nullable = false, updatable = true)
+	@Column(nullable = false, updatable = true, length = 2)
 	private int hectareas;
 
 	@Column(name = "id_campo", nullable = false, updatable = true)
 	private Long idCampo;
+	
+	@JsonInclude()
+	@Transient
+	private String nombreCampo;
 
 	@Column(length = 1, nullable = false, updatable = true)
 	private boolean estado;
+	
+	public String getNombreCampo() {
+		return nombreCampo;
+	}
+
+	public void setNombreCampo(String nombreCampo) {
+		this.nombreCampo = nombreCampo;
+	}
 
 	public Long getIdPredio() {
 		return idPredio;

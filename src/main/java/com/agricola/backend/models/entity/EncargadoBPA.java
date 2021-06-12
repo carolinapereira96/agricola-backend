@@ -17,16 +17,16 @@ public class EncargadoBPA implements Serializable {
 
 	// length para definir tamaño, updatable para si es actualizable y nullable para
 	// ver si acepta null
-	@Column(length = 50, nullable = false, updatable = true)
+	@Column(length = 30, nullable = false, updatable = true)
 	private String nombre;
 
 	@Column(length = 12, nullable = false, updatable = false)
 	private String telefono;
 
-	@Column(length = 50, nullable = false, updatable = true)
+	@Column(length = 40, nullable = false, updatable = true)
 	private String email;
 
-	@Column(length = 16, nullable = false, updatable = true)
+	@Column(length = 8, nullable = false, updatable = true)
 	private String pass;
 	
 	@Column(length = 1, nullable = false, updatable = true)

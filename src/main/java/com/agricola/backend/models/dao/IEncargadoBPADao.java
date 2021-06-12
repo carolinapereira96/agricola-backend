@@ -7,6 +7,9 @@ import com.agricola.backend.models.entity.EncargadoBPA;
 
 public interface IEncargadoBPADao extends CrudRepository<EncargadoBPA, String>{
 	
+	@Query("SELECT e FROM EncargadoBPA e WHERE e.nombre = ?1")
+	public EncargadoBPA findEncargadoByNombre(String nombre);
+	
 	@Query("SELECT e FROM EncargadoBPA e WHERE e.run = ?1")
 	public EncargadoBPA findEncargadoByRun(String run);
 	

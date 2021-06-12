@@ -83,6 +83,12 @@ public class UsuarioService implements IUsuarioService,UserDetailsService {
 	}
 
 
+	@Override
+	public Usuario findByEmail(String email) {
+		return usuarioDao.findByEmail(email);
+	}
+
+
 
 
 

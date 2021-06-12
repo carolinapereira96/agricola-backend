@@ -20,22 +20,22 @@ public class Fitosanitario implements Serializable {
 
 	// length para definir tamaño, updatable para si es actualizable y nullable para
 	// ver si acepta null
-	@Column(name = "nombre_comercial", length = 25, nullable = false, updatable = true)
+	@Column(name = "nombre_comercial", length = 30, nullable = false, updatable = true)
 	private String nombreComercial;
 
-	@Column(length = 25, nullable = false, updatable = true)
+	@Column(length = 30, nullable = false, updatable = true)
 	private String objetivo;
 	
-	@Column(length = 25, nullable = false, updatable = true)
+	@Column(length = 30, nullable = false, updatable = true)
 	private String tipo;
 
-	@Column(name = "ingrediente_activo", length = 25, nullable = false, updatable = true)
+	@Column(name = "ingrediente_activo", length = 30, nullable = false, updatable = true)
 	private String ingredienteActivo;
 
-	@Column(nullable = false, updatable = true)
-	private int mojamiento;
+	@Column(nullable = false, updatable = true, length = 6)
+	private Double mojamiento;
 
-	@Column(nullable = false, updatable = true)
+	@Column(nullable = false, updatable = true, length = 2)
 	private int carencia;
 
 	public String getTipo() {
@@ -81,11 +81,11 @@ public class Fitosanitario implements Serializable {
 		this.ingredienteActivo = ingredienteActivo;
 	}
 
-	public int getMojamiento() {
+	public double getMojamiento() {
 		return mojamiento;
 	}
 
-	public void setMojamiento(int mojamiento) {
+	public void setMojamiento(Double mojamiento) {
 		this.mojamiento = mojamiento;
 	}
 

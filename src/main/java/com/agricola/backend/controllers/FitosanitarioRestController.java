@@ -64,7 +64,8 @@ public class FitosanitarioRestController {
 		
 		Map<String, Object> response = new HashMap<>();
 		
-		if (fitosanitarioService.findFitosanitarioByNombre(fitosanitario.getNombreComercial().trim()) != null) {
+		if (fitosanitarioService.findFitosanitarioByNombre(fitosanitario.getNombreComercial().trim()) != null &&
+			fitosanitarioService.findFitosanitarioByNombre(fitosanitario.getNombreComercial()).isEstado() == true)  {
 			response.put("mensaje", "El nombre del producto fitosanitario ya existe");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
 		}
@@ -95,7 +96,8 @@ public class FitosanitarioRestController {
 		
 		if (!fitosanitarioActual.getNombreComercial().trim().equalsIgnoreCase(fitosanitario.getNombreComercial().trim())) {
 
-			if (fitosanitarioService.findFitosanitarioByNombre(fitosanitario.getNombreComercial().trim()) != null) {
+			if (fitosanitarioService.findFitosanitarioByNombre(fitosanitario.getNombreComercial().trim()) != null && 
+					fitosanitarioService.findFitosanitarioByNombre(fitosanitario.getNombreComercial()).isEstado() == true) {
 				response.put("mensaje", "El nombre del producto fitosanitario ya existe");
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
 			}

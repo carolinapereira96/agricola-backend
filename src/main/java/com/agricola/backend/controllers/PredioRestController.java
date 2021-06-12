@@ -65,10 +65,13 @@ public class PredioRestController {
 	public ResponseEntity<?> crearPredio(@RequestBody Predio predio) {
 		
 		Map<String, Object> response = new HashMap<>();
+		List<Predio> predios = predioService.findAll();
 		
-		if (predioService.findPredioByNombre(predio.getNombre().trim()) != null) {
-			response.put("mensaje", "El nombre del predio ya existe");
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+		for(int i=0; i<predios.size(); i++) {
+			if(predio.getNombre().trim().equalsIgnoreCase(predios.get(i).getNombre()) && predios.get(i).isEstado() == true) {
+				response.put("mensaje", "El nombre del predio ya existe");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+			}
 		}
 
 		Predio predio2 = null;
@@ -90,7 +93,11 @@ public class PredioRestController {
 	@PutMapping("/predios/{id}") 
 	public ResponseEntity<?> actualizarPredio(@RequestBody Predio predio, @PathVariable Long id) {
 		
+		System.out.println(predio.getNombreCampo());
+		
 		Map<String, Object> response = new HashMap<>();
+		
+		List<Predio> predios = predioService.findAll();
 		
 		Predio predioActual = predioService.findById(id);
 		
@@ -98,9 +105,11 @@ public class PredioRestController {
 		
 		if (!predioActual.getNombre().trim().equalsIgnoreCase(predio.getNombre().trim())) {
 
-			if (predioService.findPredioByNombre(predio.getNombre().trim()) != null) {
-				response.put("mensaje", "El nombre del predio ya existe");
-				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+			for(int i=0; i<predios.size(); i++) {
+				if(predio.getNombre().trim().equalsIgnoreCase(predios.get(i).getNombre()) && predios.get(i).isEstado() == true) {
+					response.put("mensaje", "El nombre del predio ya existe");
+					return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+				}
 			}
 		}		
 

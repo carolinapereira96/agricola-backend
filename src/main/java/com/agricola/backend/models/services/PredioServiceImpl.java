@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.agricola.backend.models.dao.ICampoDao;
 import com.agricola.backend.models.dao.IPredioDao;
+import com.agricola.backend.models.entity.Campo;
 import com.agricola.backend.models.entity.Predio;
 
 @Service
@@ -15,6 +17,9 @@ public class PredioServiceImpl implements IPredioService {
 
 	@Autowired
 	private IPredioDao predioDao;
+	
+	@Autowired
+	private ICampoDao campoDao;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -25,6 +30,8 @@ public class PredioServiceImpl implements IPredioService {
 		
 		for(int i=0; i < listPredios.size(); i++) {
 			if(listPredios.get(i).isEstado()) {
+				Campo campo = campoDao.findById(listPredios.get(i).getIdCampo()).orElse(null);
+				listPredios.get(i).setNombreCampo(campo.getNombre());;
 				listPrediosFiltrada.add(listPredios.get(i));
 			}
 		}		
