@@ -41,5 +41,32 @@ public class AdministradorServiceImpl implements IAdministradorService{
 	public Administrador findById(String id) {
 		return administradorDao.findById(id).orElse(null);
 	}
+	
+	@Override
+	public Administrador findAdministradorByRun(String run) {
+		return administradorDao.findAdministradorByRun(run);
+	}
+
+	
+	@Override
+	public Administrador findAdministradorByTelefono(String telefono) {
+		return administradorDao.findAdministradorByTelefono(telefono);
+	}
+
+	@Override
+	public Administrador findAdministradorByEmail(String email) {
+		return administradorDao.findAdministradorByEmail(email);
+	}
+
+	
+	@Override
+	public Administrador findAdministradorByPass(String pass) {
+		return administradorDao.findAdministradorByPass(pass);
+	}
+
+	@Override
+	public Object findAdministradorByNombre(String nombre) {
+		return administradorDao.findAdministradorByNombre(nombre);
+	}
 
 }

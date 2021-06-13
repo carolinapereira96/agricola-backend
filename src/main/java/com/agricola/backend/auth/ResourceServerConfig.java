@@ -21,7 +21,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-	     http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/encargadosBPA").permitAll()// esto es de prueba es la ruta que se dejara para que cualqueira pueda acceder
+	     http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/estadisticas").permitAll()// esto es de prueba es la ruta que se dejara para que cualqueira pueda acceder
 	     .anyRequest().authenticated()
 	     .and().cors().configurationSource(corsConfigurationSource()); 
 	}

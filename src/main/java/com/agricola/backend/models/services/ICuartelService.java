@@ -13,4 +13,6 @@ public interface ICuartelService {
 	public void delete(Long id);
 
 	public Cuartel findById(Long id);
+
+	public Cuartel findCuartelByNombre(String nombre);
 }

@@ -13,4 +13,6 @@ public interface IFertilizanteService {
 
 	public Fertilizante findById(Long id);
 
+	public Fertilizante findCuartelByNombre(String nombre);
+
 }

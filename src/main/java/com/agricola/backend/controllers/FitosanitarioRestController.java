@@ -30,13 +30,14 @@ public class FitosanitarioRestController {
 	@Autowired
 	private IFitosanitarioService fitosanitarioService;
 
-	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA", "ROLE_DUENO" })
-	@GetMapping("/fitosanitarios")
+
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA", "ROLE_DUENO","ROLE_ADMINCAMPO" })
+	@GetMapping("/fitosanitarios") // okei
 	public List<Fitosanitario> listaFitosanitarios() {
 		return fitosanitarioService.findAll();
 	}
 
-	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA", "ROLE_DUENO" })
+	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA", "ROLE_DUENO" ,"ROLE_ADMINCAMPO"})
 	@GetMapping("/fitosanitarios/{id}")
 	public ResponseEntity<?> buscarFitosanitarioById(@PathVariable Long id) {
 		
@@ -57,6 +58,7 @@ public class FitosanitarioRestController {
 		}
 		return new ResponseEntity<Fitosanitario>(fitosanitario, HttpStatus.OK);
 	}
+	
 
 	@Secured({ "ROLE_ADMIN", "ROLE_ENCARGADOBPA", "ROLE_DUENO" })
 	@PostMapping("/fitosanitarios")

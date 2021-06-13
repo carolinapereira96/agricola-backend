@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name="cuarteles")
@@ -32,14 +35,19 @@ public class Cuartel implements Serializable{
 	private String runEncargadoBPA;
 	
 	@Column(name="id_predio", nullable = false, updatable = true)
-	private int idPredio;
+	private Long idPredio;
 	
 	
 	@Column(nullable = false, updatable = true)
 	private boolean estado;
 	
+	@JsonInclude()
+	@Transient
+	private String nombreEncargadoBPA;
 	
-	
+	@JsonInclude()
+	@Transient
+	private String nombrePredio;
 
 	public boolean isEstado() {
 		return estado;
@@ -129,15 +137,41 @@ public class Cuartel implements Serializable{
 
 
 
-	public int getIdPredio() {
+	public Long getIdPredio() {
 		return idPredio;
 	}
 
 
 
 
-	public void setIdPredio(int idPredio) {
+	public void setIdPredio(Long idPredio) {
 		this.idPredio = idPredio;
+	}
+
+
+
+
+	public String getNombrePredio() {
+		return nombrePredio;
+	}
+
+
+
+	public void setNombrePredio(String nombrePredio) {
+		this.nombrePredio = nombrePredio;
+	}
+
+
+
+
+	public String getNombreEncargadoBPA() {
+		return nombreEncargadoBPA;
+	}
+
+
+
+	public void setNombreEncargadoBPA(String nombreEncargadoBPA) {
+		this.nombreEncargadoBPA = nombreEncargadoBPA;
 	}
 
 

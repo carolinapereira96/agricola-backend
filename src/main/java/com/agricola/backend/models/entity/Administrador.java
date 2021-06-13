@@ -15,17 +15,17 @@ public class Administrador  implements Serializable{
 	@Column(name="run")
 	private String run;
  
-	@Column(length = 50, nullable = false, updatable = true) 
+	@Column(length = 50, nullable = false, updatable = true,unique=true) 
 	private String nombre;
 
 
-	@Column(length = 12, nullable = false, updatable = false)
+	@Column(length = 12, nullable = false, updatable = false, unique=true)
 	private String telefono;
 
-	@Column(length = 50, nullable = false, updatable = true)
+	@Column(length = 50, nullable = false, updatable = true, unique=true)
 	private String email;
 
-	@Column(length = 15, nullable = false, updatable = true) 
+	@Column(length = 15, nullable = false, updatable = true,unique=true) 
 	private String pass;
 	
 	@Column(nullable = false, updatable = true)
