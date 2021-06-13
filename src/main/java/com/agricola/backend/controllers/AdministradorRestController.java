@@ -147,6 +147,14 @@ public class AdministradorRestController {
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
 			}
 		}
+		
+		if (!administradorActual.getEmail().trim().equalsIgnoreCase(adm.getEmail().trim())) {
+			if (administradorService.findAdministradorByEmail(adm.getEmail().trim()) != null) {
+				System.out.println("entre al segundo if");
+				response.put("mensaje", "Error, el email ya existe");
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
+			}
+		}
 
 		if (!administradorActual.getNombre().trim().equalsIgnoreCase(adm.getNombre().trim())) {
 
@@ -193,11 +201,15 @@ public class AdministradorRestController {
 		// de la autenticación al usuario excepto en la tabla de la entidad en este caso
 		// administrador, solo la setea
 		// eliminado de forma lógica
+		
+		if (administradorService.findAdministradorByRun(run) == null) {
+			response.put("mensaje", "Error, el administrador a eliminar no existe en la base de datos");
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
 
 		try {
-			administradorService.delete(run);
 			userService.findByUsername(run).setEnabled(false);
-
+			administradorService.delete(run);
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al eliminar el administrador en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));

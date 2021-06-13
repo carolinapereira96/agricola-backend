@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.agricola.backend.models.entity.Cuartel;
 import com.agricola.backend.models.services.ICuartelService;
@@ -86,10 +85,12 @@ public class CuartelRestController {
 	@Secured({ "ROLE_ADMIN", "ROLE_ADMINCAMPO", "ROLE_DUENO" })
 	@PutMapping("/cuarteles/{id}")
 	public ResponseEntity<?> actualizarcuartel(@RequestBody Cuartel cuartel, @PathVariable Long id) {
-		
+		System.out.println(id);
+		System.out.println(cuartel.getRunEncargadoBPA());
 		Cuartel cuartelActual = cuartelService.findById(id);
 		Cuartel cuartelUpdated = null;
 		Map<String, Object> response = new HashMap<>();
+		
 		
 		if (cuartelActual == null) {
 			response.put("mensaje", "Error: no se pudo editar, el cuartel:  ".concat(String.valueOf(id))

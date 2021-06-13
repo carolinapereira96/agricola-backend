@@ -7,10 +7,10 @@ import com.agricola.backend.models.entity.Usuario;
 
 public interface IUsuarioDao extends CrudRepository<Usuario,Long>{
 	 
-	public Usuario findByUsername(String username);
+	
 	
 	@Query("select u from Usuario u where u.username=?1")
-	public Usuario findByUsername2(String username);
+	public Usuario findByUsername(String username);
 
 	@Query("select u from Usuario u where u.email=?1")
 	public Usuario findByEmail(String email);
