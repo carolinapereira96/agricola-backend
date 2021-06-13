@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name="registros_fertilizantes")
@@ -35,26 +38,66 @@ public class RegistroFertilizante implements Serializable{
 	
 	@Column(name = "cantidad_Aplicada", nullable = false, updatable = true)
 	private double cantidadAplicada;
-	
-	
+
 	@Column(name = "tipo_maquinaria", length = 25, nullable = false, updatable = true)
 	private String tipoMaquinaria;
 
 	@Column(name="run_encargado_bpa",nullable = false, updatable = true)
 	private String runEncargadoBPA;
+	
+	@JsonInclude()
+	@Transient
+	private String nombreEncargadoBPA;
 
 	@Column(name="id_fertilizante",nullable = false, updatable = true)
-	private int idFertilizante;
+	private Long idFertilizante;
+	
+	@JsonInclude()
+	@Transient
+	private String nombreFertilizante;
 	
 	@Column(name="id_cuartel",nullable = false, updatable = true)
-	private int idCuartel;
+	private Long idCuartel;
 	
-	public int getIdCuartel() {
+	@JsonInclude()
+	@Transient
+	private String nombreCuartel;
+	
+	public String getNombreEncargadoBPA() {
+		return nombreEncargadoBPA;
+	}
+
+
+	public void setNombreEncargadoBPA(String nombreEncargadoBPA) {
+		this.nombreEncargadoBPA = nombreEncargadoBPA;
+	}
+
+
+	public String getNombreFertilizante() {
+		return nombreFertilizante;
+	}
+
+
+	public void setNombreFertilizante(String nombreFertilizante) {
+		this.nombreFertilizante = nombreFertilizante;
+	}
+
+
+	public String getNombreCuartel() {
+		return nombreCuartel;
+	}
+
+
+	public void setNombreCuartel(String nombreCuartel) {
+		this.nombreCuartel = nombreCuartel;
+	}
+	
+	public Long getIdCuartel() {
 		return idCuartel;
 	}
 
 
-	public void setIdCuartel(int idCuartel) {
+	public void setIdCuartel(Long idCuartel) {
 		this.idCuartel = idCuartel;
 	}
 
@@ -131,12 +174,12 @@ public class RegistroFertilizante implements Serializable{
 	}
 
 
-	public int getIdFertilizante() {
+	public Long getIdFertilizante() {
 		return idFertilizante;
 	}
 
 
-	public void setIdFertilizante(int idFertilizante) {
+	public void setIdFertilizante(Long idFertilizante) {
 		this.idFertilizante = idFertilizante;
 	}
 

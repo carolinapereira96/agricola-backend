@@ -32,6 +32,10 @@ public class Campo implements Serializable {
 
 	@Column(name = "run_dueno_campo", nullable = false, updatable = true)
 	private String runDuenoCampo;
+	
+	@JsonInclude()
+	@Transient
+	private String nombreDuenoCampo;
 
 	@Column(name = "run_administrador_campo", nullable = false, updatable = true)
 	private String runAdministradorCampo;
@@ -42,6 +46,15 @@ public class Campo implements Serializable {
 
 	@Column(length = 1, nullable = false, updatable = true)
 	private boolean estado;
+	
+	
+	public String getNombreDuenoCampo() {
+		return nombreDuenoCampo;
+	}
+
+	public void setNombreDuenoCampo(String nombreDuenoCampo) {
+		this.nombreDuenoCampo = nombreDuenoCampo;
+	}
 
 	public Long getIdCampo() {
 		return idCampo;

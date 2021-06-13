@@ -34,15 +34,15 @@ public class RegistroFitosanitarioServiceImpl implements IRegistroFitosanitarioS
 	@Transactional(readOnly = true)
 	public List<RegistroFitosanitario> findAll() {
 		
-		List<RegistroFitosanitario> listFerti = (List<RegistroFitosanitario>) registroFitosanitarioDao.findAll();
+		List<RegistroFitosanitario> listFito = (List<RegistroFitosanitario>) registroFitosanitarioDao.findAll();
 		
-		for(int i=0; i< listFerti.size(); i++) {
-			EncargadoBPA encargado = encargadoDao.findById(listFerti.get(i).getRunEncargadoBPA()).orElse(null);
-			listFerti.get(i).setNombreEncargadoBPA(encargado.getNombre());
-			Fitosanitario fito = fitoDao.findById(listFerti.get(i).getIdFitosanitario()).orElse(null);
-			listFerti.get(i).setNombreFitosanitario(fito.getNombreComercial());
-			Cuartel cuartel = cuartelDao.findById(listFerti.get(i).getIdCuartel()).orElse(null);
-			listFerti.get(i).setNombreCuartel(cuartel.getNombre());			
+		for(int i=0; i< listFito.size(); i++) {
+			EncargadoBPA encargado = encargadoDao.findById(listFito.get(i).getRunEncargadoBPA()).orElse(null);
+			listFito.get(i).setNombreEncargadoBPA(encargado.getNombre());
+			Fitosanitario fito = fitoDao.findById(listFito.get(i).getIdFitosanitario()).orElse(null);
+			listFito.get(i).setNombreFitosanitario(fito.getNombreComercial());
+			Cuartel cuartel = cuartelDao.findById(listFito.get(i).getIdCuartel()).orElse(null);
+			listFito.get(i).setNombreCuartel(cuartel.getNombre());			
 		}
 		
 		return (List<RegistroFitosanitario>) registroFitosanitarioDao.findAll();
