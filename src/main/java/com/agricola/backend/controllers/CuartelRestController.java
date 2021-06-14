@@ -29,7 +29,7 @@ public class CuartelRestController {
 	@Autowired
 	private ICuartelService cuartelService;
 
-	@Secured({ "ROLE_ADMIN", "ROLE_ADMINCAMPO", "ROLE_DUENO" })
+	@Secured({ "ROLE_ADMIN", "ROLE_ADMINCAMPO", "ROLE_DUENO","ROLE_ENCARGADOBPA" })
 	@GetMapping("/cuarteles")
 	public List<Cuartel> listarCuarteles() {
 		return cuartelService.findAll();

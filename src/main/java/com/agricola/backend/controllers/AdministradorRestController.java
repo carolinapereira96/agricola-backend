@@ -43,7 +43,7 @@ public class AdministradorRestController {
 	@Autowired
 	private IAdministradorService administradorService;
 
-	@Secured({ "ROLE_ADMIN", "ROLE_DUENO" })
+	@Secured({ "ROLE_ADMIN", "ROLE_DUENO","ROLE_ADMINCAMPO" })
 	@GetMapping("/administradores")
 	public List<Administrador> listarAdministradores() {
 		return administradorService.findAll();

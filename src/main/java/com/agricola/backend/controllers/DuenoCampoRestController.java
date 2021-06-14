@@ -42,7 +42,7 @@ public class DuenoCampoRestController {
 	@Autowired
 	private IDuenoCampoService duenoCampoService;
 
-	@Secured("ROLE_ADMIN")
+	@Secured({"ROLE_ADMIN","ROLE_ADMINCAMPO","ROLE_DUENO"})
 	@GetMapping("/duenos")
 	public List<DuenoCampo> listarDuenos() {
 		return duenoCampoService.findAll();

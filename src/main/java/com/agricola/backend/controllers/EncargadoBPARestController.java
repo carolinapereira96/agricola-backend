@@ -45,7 +45,7 @@ public class EncargadoBPARestController {
 	@Autowired
 	private IEncargadoBPAService encargadoBPAService;
 
-	@Secured({ "ROLE_ADMIN", "ROLE_ADMINCAMPO", "ROLE_DUENO" })
+	@Secured({ "ROLE_ADMIN", "ROLE_ADMINCAMPO", "ROLE_DUENO","ROLE_ENCARGADOBPA" })
 	@GetMapping("/encargadosBPA") 
 	public List<EncargadoBPA> listaEncargadosBPA() {
 		return encargadoBPAService.findAll();
