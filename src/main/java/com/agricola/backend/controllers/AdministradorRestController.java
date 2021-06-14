@@ -172,13 +172,11 @@ public class AdministradorRestController {
 			}
 		}
 		try {
-			administradorActual.setNombre(adm.getNombre());
 			administradorActual.setTelefono(adm.getTelefono());
 			administradorActual.setEmail(adm.getEmail());
 			administradorActual.setPassword(adm.getPassword());
 
 			user.setEmail(adm.getEmail());
-			user.setNombre(adm.getNombre());
 			user.setPassword(passwordEncoder.encode(adm.getPassword()));
 			administradorUpdated = administradorService.save(administradorActual);
 

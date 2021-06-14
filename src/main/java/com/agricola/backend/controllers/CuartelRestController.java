@@ -62,7 +62,7 @@ public class CuartelRestController {
 	public ResponseEntity<?> crearCuartel(@RequestBody Cuartel cuartel) {
 
 		Map<String, Object> response = new HashMap<>();
-		if (cuartelService.findCuartelByNombre(cuartel.getNombre().trim()) != null && cuartelService.findCuartelByNombre(cuartel.getNombre()).isEstado() ) {
+		if (cuartelService.findCuartelByNombre(cuartel.getNombre().trim()) != null && cuartelService.findCuartelByNombre(cuartel.getNombre().trim()).isEstado() == true ) {
 			response.put("mensaje", "Error, el cuartel con nombre: ".concat(cuartel.getNombre()).concat(" ya existe!"));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_ACCEPTABLE);
 		}
@@ -109,6 +109,7 @@ public class CuartelRestController {
 				cuartelActual.setNombre(cuartel.getNombre());
 				cuartelActual.setHectareas(cuartel.getHectareas());
 				cuartelActual.setTipoUva(cuartel.getTipoUva());
+				cuartelActual.setRunEncargadoBPA(cuartel.getRunEncargadoBPA());
 				cuartelUpdated= cuartelService.save(cuartelActual);
 		}catch(DataAccessException e){
 			response.put("mensaje", "Error al actualizar el cuartel en la base de datos");
